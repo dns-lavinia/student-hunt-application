@@ -83,47 +83,70 @@ public class RegisterFrame extends JFrame {
             String password = String.valueOf(passwordField.getPassword());
 
             // if all the fields are completed with information, check the information and register the user
-            if(type != null && !(username.equals("")) && !(password.equals("")))
-                writeUserCredentials(type, username, password);
+            if(type != null && !(username.equals("")) && !(password.equals(""))) {
+                // if everything was ok, check if the username is not yet in the database and that it has only letters
+                // numbers, dashes and points, add to the new 'database' as a new entry
+                if(isValidUsername(username)) {
+
+                    // if the username is valid, put it the json file if it is not already there
+                    tryRegistering(type, username, password);
+                }
+                else {
+                    printErrorMessage(2);
+                }
+            }
             // if one of the boxes is not completed/chosen, display a message
             else {
                 printErrorMessage(1);
             }
-
-            // if everything was ok, check if the username is not yet in the database and that it has only letters
-            // numbers, dashes and points, add to the new 'database' as a new entry
-            if(isValidUsername(username)) {
-                System.out.println("yay the username is valid");
-            }
         });
     }
 
+    // a username should have only letters, numbers, dashes and points
     private boolean isValidUsername(String username) {
+        for(int i = 0; i < username.length(); ++i) {
+            char c = username.charAt(i);
+
+            // if it does NOT follow the username chosen standard, return false
+            if(!(Character.isDigit(c) || Character.isLetter(c) || c == '-' || c == '.'))
+                return false;
+        }
+
         return true;
     }
 
-    private void writeUserCredentials(String chosenUser, String username, String password) {
-        System.out.println(chosenUser + " " + username + " " + password);
+    private void tryRegistering(String chosenUser, String username, String password) {
+        registerUser(chosenUser, username, password);
+    }
+
+    private void registerUser(String chosenUser, String username, String password) {
     }
 
     // this method will print various error messages based on the errors
     // error_number -> 1 : one of the boxes was left empty, cannot register
-    //              -> 2 : the user with the given username already exists, cannot register user
+    //              -> 2 : invalid username format
+    //              -> 3 : the user with the given username already exists, cannot register user
     private void printErrorMessage(int error_number) {
         // create a JLabel above all of the information, make it red
         JLabel errorLabel = new JLabel();
         errorLabel.setForeground(Color.red);
-        errorLabel.setBounds(50, 80, 250, 20);
+        errorLabel.setBounds(50, 80, 300, 20);
         container.add(errorLabel);
 
         switch(error_number) {
             case 1:
-                errorLabel.setText("* One of the fields was left empty");
+                errorLabel.setOpaque(true);
+                errorLabel.setText("*One of the fields was left empty");
                 break;
             case 2:
+                errorLabel.setOpaque(true);
+                errorLabel.setText("*Invalid username: use a-z/A-z/0-9/-/.");
                 break;
+            case 3:
+                errorLabel.setOpaque(true);
             default:
-                break;
+                errorLabel.setOpaque(true);
+                errorLabel.setText("*Invalid error_number");
         }
     }
 }
