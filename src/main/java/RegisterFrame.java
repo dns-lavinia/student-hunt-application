@@ -21,6 +21,14 @@ public class RegisterFrame extends JFrame {
 
     RegisterFrame()
     {
+        this.setTitle("Registration Form");
+        this.setVisible(true);
+
+        this.setResizable(false);
+
+        this.setBounds(10,10,370,600);
+
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayoutManager();
         setLocationAndSize();
         addComponentsToContainer();
@@ -162,22 +170,23 @@ public class RegisterFrame extends JFrame {
         errorLabel.setBounds(50, 80, 300, 20);
         container.add(errorLabel);
 
-        switch(error_number) {
-            case 1:
+        switch (error_number) {
+            case 1 -> {
                 errorLabel.setOpaque(true);
                 errorLabel.setText("*One of the fields was left empty");
-                break;
-            case 2:
+            }
+            case 2 -> {
                 errorLabel.setOpaque(true);
                 errorLabel.setText("*Invalid username: use a-z/A-z/0-9/-/.");
-                break;
-            case 3:
+            }
+            case 3 -> {
                 errorLabel.setOpaque(true);
                 errorLabel.setText("*The username is already taken");
-                break;
-            default:
+            }
+            default -> {
                 errorLabel.setOpaque(true);
                 errorLabel.setText("*Invalid error_number");
+            }
         }
     }
 }
