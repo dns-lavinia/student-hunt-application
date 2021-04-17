@@ -89,7 +89,17 @@ public class RegisterFrame extends JFrame {
             else {
                 printErrorMessage(1);
             }
+
+            // if everything was ok, check if the username is not yet in the database and that it has only letters
+            // numbers, dashes and points, add to the new 'database' as a new entry
+            if(isValidUsername(username)) {
+                System.out.println("yay the username is valid");
+            }
         });
+    }
+
+    private boolean isValidUsername(String username) {
+        return true;
     }
 
     private void writeUserCredentials(String chosenUser, String username, String password) {
