@@ -21,6 +21,14 @@ public class RegisterFrame extends JFrame {
 
     RegisterFrame()
     {
+        this.setTitle("Registration Form");
+        this.setVisible(true);
+
+        this.setResizable(false);
+
+        this.setBounds(10,10,370,600);
+
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayoutManager();
         setLocationAndSize();
         addComponentsToContainer();
@@ -124,6 +132,8 @@ public class RegisterFrame extends JFrame {
     }
 
     private void registerUser(String chosenUser, String username, String password) {
+        // generate the hashed password using PBKDF2 and add it in the json file
+
         JSONObject userDetails= new JSONObject();
         userDetails.put("userType", chosenUser);
         userDetails.put("username", username);
@@ -133,12 +143,21 @@ public class RegisterFrame extends JFrame {
         // I am not sure where to put the userCredentials file so just change the path accordingly
         try(FileWriter file = new FileWriter("../user_info/userCredentials.json", true)) {
             file.write(userDetails.toJSONString());
+
+            // print in the RegisterFrame the message that the account was created successfully
+            JLabel errorLabel = new JLabel();
+            errorLabel.setForeground(new Color(0, 200, 0));
+            errorLabel.setBounds(50, 80, 300, 20);
+            container.add(errorLabel);
+
+            errorLabel.setOpaque(true);
+            errorLabel.setText("Account created successfully.");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
+
 
     // this method will print various error messages based on the errors
     // error_number -> 1 : one of the boxes was left empty, cannot register
@@ -151,20 +170,23 @@ public class RegisterFrame extends JFrame {
         errorLabel.setBounds(50, 80, 300, 20);
         container.add(errorLabel);
 
-        switch(error_number) {
-            case 1:
+        switch (error_number) {
+            case 1 -> {
                 errorLabel.setOpaque(true);
                 errorLabel.setText("*One of the fields was left empty");
-                break;
-            case 2:
+            }
+            case 2 -> {
                 errorLabel.setOpaque(true);
                 errorLabel.setText("*Invalid username: use a-z/A-z/0-9/-/.");
-                break;
-            case 3:
+            }
+            case 3 -> {
                 errorLabel.setOpaque(true);
-            default:
+                errorLabel.setText("*The username is already taken");
+            }
+            default -> {
                 errorLabel.setOpaque(true);
                 errorLabel.setText("*Invalid error_number");
+            }
         }
     }
 }
