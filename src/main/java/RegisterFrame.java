@@ -1,5 +1,9 @@
+import org.json.simple.JSONObject;
+
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class RegisterFrame extends JFrame {
     private final Container container = getContentPane();
@@ -120,6 +124,20 @@ public class RegisterFrame extends JFrame {
     }
 
     private void registerUser(String chosenUser, String username, String password) {
+        JSONObject userDetails= new JSONObject();
+        userDetails.put("userType", chosenUser);
+        userDetails.put("username", username);
+        userDetails.put("password", password);
+
+        // write in the JSON file
+        // I am not sure where to put the userCredentials file so just change the path accordingly
+        try(FileWriter file = new FileWriter("../user_info/userCredentials.json", true)) {
+            file.write(userDetails.toJSONString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     // this method will print various error messages based on the errors
