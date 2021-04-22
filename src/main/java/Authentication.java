@@ -1,10 +1,10 @@
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -109,6 +109,8 @@ public class Authentication {
         try(FileWriter file = new FileWriter(databasePath, true)) {
 
             file.write(userDetails.toJSONString());
+            file.write('\n');
+
             file.flush();
             file.close();
 
@@ -123,24 +125,20 @@ public class Authentication {
     }
 
     private boolean userExists(String username) {
-        JSONParser jsonParser = new JSONParser();
+
 
         try (FileReader reader = new FileReader(databasePath)) {
+            // Read from the .json file line by line -> .ndjson style
+            BufferedReader buffReader =new BufferedReader(reader);
+            String line;
 
-            // Read from the .json file
-            Object obj = jsonParser.parse(reader);
+            while((line = buffReader.readLine()) != null) {
+                Object o = new JSONParser().parse(line);
+                JSONObject obj = (JSONObject) o;
 
-            JSONArray userList = new JSONArray();
-            userList.add(obj);
+                String objectUsername = (String) obj.get("username");
 
-            // Iterate through all the users and try to find if the user with the same username already exists
-
-            for (Object o : userList) {
-                JSONObject object = (JSONObject) o;
-
-                String objectUsername = (String) object.get("username");
-
-                if (username.equals(objectUsername))
+                if(username.equals(objectUsername))
                     return true;
             }
 
