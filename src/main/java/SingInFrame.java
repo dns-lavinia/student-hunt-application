@@ -1,9 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-class SingInFrame extends JFrame implements ActionListener {
+
+class SingInFrame extends JFrame  {
 
     Container container = getContentPane();
     JLabel userLabel = new JLabel("USERNAME");
@@ -57,21 +56,18 @@ class SingInFrame extends JFrame implements ActionListener {
     }
 
     private void addActionEvent() {
-        signinButton.addActionListener(this);
-        resetButton.addActionListener(this);
-        showPassword.addActionListener(this);
-        RegisterButton.addActionListener(this);
-    }
-
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        //Coding Part of LOGIN button
-        if ( e.getSource() == RegisterButton ) {
+        showPassword.addActionListener(e -> {
+            if (showPassword.isSelected()) {
+                passwordField.setEchoChar((char) 0);
+            } else {
+                passwordField.setEchoChar('*');
+            }
+        });
+        RegisterButton.addActionListener(e -> {
             this.setVisible(false);
             RegisterFrame frame = new RegisterFrame();
-        }
-        if (e.getSource() == signinButton) {
+        });
+        signinButton.addActionListener(e -> {
             String userText;
             String pwdText;
             userText = userTextField.getText();
@@ -81,20 +77,11 @@ class SingInFrame extends JFrame implements ActionListener {
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid Username or Password");
             }
-
-        }
-        //Coding Part of RESET button
-        if (e.getSource() == resetButton) {
+        });
+        resetButton.addActionListener(e -> {
             userTextField.setText("");
             passwordField.setText("");
-        }
-        //Coding Part of showPassword JCheckBox
-        if (e.getSource() == showPassword) {
-            if (showPassword.isSelected()) {
-                passwordField.setEchoChar((char) 0);
-            } else {
-                passwordField.setEchoChar('*');
-            }
-        }
+        });
     }
+
 }
