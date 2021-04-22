@@ -19,9 +19,9 @@ class SingInFrame extends JFrame implements ActionListener {
     SingInFrame() {
         this.setTitle("Login Form");
         this.setVisible(true);
+        this.setResizable(false);
         this.setBounds(10, 10, 370, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setResizable(false);
         setLayoutManager();
         setLocationAndSize();
         addComponentsToContainer();

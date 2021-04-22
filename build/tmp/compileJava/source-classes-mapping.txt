@@ -1,8 +1,8 @@
-RegisterFrame.java
- RegisterFrame
-SingInFrame.java
- SingInFrame
 Main.java
  Main
-PasswordAuthentication.java
- PasswordAuthentication
+SingInFrame.java
+ SingInFrame
+Authentication.java
+ Authentication
+RegisterFrame.java
+ RegisterFrame
