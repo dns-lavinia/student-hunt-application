@@ -32,7 +32,7 @@ public class RegisterFrame extends JFrame {
         setLayoutManager();
         setLocationAndSize();
         addComponentsToContainer();
-        addActionEvent();//calling addActionEvent() method
+        addActionEvent(); //calling addActionEvent() method
 
     }
 
@@ -145,13 +145,13 @@ public class RegisterFrame extends JFrame {
             file.write(userDetails.toJSONString());
 
             // print in the RegisterFrame the message that the account was created successfully
-            JLabel errorLabel = new JLabel();
-            errorLabel.setForeground(new Color(0, 200, 0));
-            errorLabel.setBounds(50, 80, 300, 20);
-            container.add(errorLabel);
+            JLabel successLabel = new JLabel();
+            successLabel.setForeground(new Color(0, 200, 0));
+            successLabel.setBounds(50, 80, 300, 20);
+            container.add(successLabel);
 
-            errorLabel.setOpaque(true);
-            errorLabel.setText("Account created successfully.");
+            successLabel.setOpaque(true);
+            successLabel.setText("Account created successfully.");
 
         } catch (IOException e) {
             e.printStackTrace();
