@@ -126,7 +126,6 @@ public class Authentication {
 
     private boolean userExists(String username) {
 
-
         try (FileReader reader = new FileReader(databasePath)) {
             // Read from the .json file line by line -> .ndjson style
             BufferedReader buffReader =new BufferedReader(reader);
