@@ -60,13 +60,11 @@ public class AdministratorFrame extends JFrame {
         // adding Action listener to the addStudentButton button
         addStudentButton.addActionListener(e -> {
 
-            // move the updateDetailsButton a bit below
-            updateDetailsButton.setLocation(60, 350);
-
             // make the button invisible for now
             addStudentButton.setVisible(false);
+            updateDetailsButton.setVisible(false);
 
-            // create 2 new fields, one for the Name, and one for the Surname
+            // create some new fields etc
             JLabel surnameLabel = new JLabel("SURNAME");
             JLabel nameLabel = new JLabel("NAME");
             JTextField nameTextField = new JTextField();
@@ -117,12 +115,41 @@ public class AdministratorFrame extends JFrame {
                 addStudentButton.setVisible(true);
 
                 // move the updateDetailsButton back to its initial place
-                updateDetailsButton.setLocation(60, 200);
+                updateDetailsButton.setVisible(true);
 
                 addComponentsToContainer();
 
                 container.repaint();
             });
+
+        });
+
+        // add Action listener for the updateStudentDetails button
+        updateDetailsButton.addActionListener(e -> {
+
+            // make the button invisible for now
+            updateDetailsButton.setVisible(false);
+            addStudentButton.setVisible(false);
+
+            // create some new fields etc
+            JLabel surnameLabel = new JLabel("SURNAME");
+            JLabel nameLabel = new JLabel("NAME");
+            JTextField nameTextField = new JTextField();
+            JTextField surnameTextField = new JTextField();
+            JButton updateForButton = new JButton("UPDATE FOR THIS STUDENT");
+
+
+            // set the location and size
+            nameLabel.setBounds(60, 100, 100, 30);
+            nameTextField.setBounds(60, 130, 250, 30);
+            surnameLabel.setBounds(60, 160, 250, 30);
+            surnameTextField.setBounds(60, 190, 250, 30);
+            updateForButton.setBounds(60, 220, 250, 30);
+            container.add(nameTextField);
+            container.add(nameLabel);
+            container.add(surnameLabel);
+            container.add(surnameTextField);
+            container.add(updateForButton);
 
         });
 
@@ -189,7 +216,6 @@ public class AdministratorFrame extends JFrame {
     // this method will print various error messages based on the errors
     // error_number -> 1 : one of the boxes was left empty, cannot add a student to the database
     //              -> 2 : Student already exists in the database
-    //              -> 3 : the user with the given username already exists, cannot register user
     private void printErrorMessage(int error_number) {
         // create a JLabel above all of the information, make it red
         JLabel errorLabel = new JLabel();
