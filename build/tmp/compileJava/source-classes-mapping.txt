@@ -4,5 +4,6 @@ RegisterFrame.java
  RegisterFrame
 SingInFrame.java
  SingInFrame
+ SingInFrame$1
 Main.java
  Main

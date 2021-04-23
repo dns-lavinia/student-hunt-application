@@ -1,5 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 
 class SingInFrame extends JFrame  {
@@ -55,6 +58,11 @@ class SingInFrame extends JFrame  {
         container.add(RegisterButton);
     }
 
+    private void setVisOnTrue()
+    {
+        this.setVisible(true);
+    }
+
     private void addActionEvent() {
         showPassword.addActionListener(e -> {
             if (showPassword.isSelected()) {
@@ -66,22 +74,45 @@ class SingInFrame extends JFrame  {
         RegisterButton.addActionListener(e -> {
             this.setVisible(false);
             RegisterFrame frame = new RegisterFrame();
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    setVisOnTrue();
+                }
+            }
+            );
+
         });
         signinButton.addActionListener(e -> {
             String userText;
             String pwdText;
             userText = userTextField.getText();
-            pwdText = passwordField.getText();
-            if (userText.equalsIgnoreCase("mehtab") && pwdText.equalsIgnoreCase("12345")) {
-                JOptionPane.showMessageDialog(this, "Login Successful");
-            } else {
-                JOptionPane.showMessageDialog(this, "Invalid Username or Password");
+            pwdText = String.valueOf(passwordField.getPassword());
+
+            Authentication a = new Authentication();
+            if ( a.VerifyData(userText,pwdText) )
+            {
+                ///succesful
+                System.out.println("succes");
+            }
+            else
+            {
+                printError();
             }
         });
         resetButton.addActionListener(e -> {
             userTextField.setText("");
             passwordField.setText("");
         });
+    }
+    private void printError()
+    {
+        JLabel errorLabel = new JLabel();
+        errorLabel.setForeground(Color.red);
+        errorLabel.setBounds(50, 80, 300, 20);
+        container.add(errorLabel);
+        errorLabel.setOpaque(true);
+        errorLabel.setText("Incorrect username or password");
     }
 
 }

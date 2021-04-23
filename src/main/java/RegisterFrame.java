@@ -1,10 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 
 public class RegisterFrame extends JFrame {
+    private boolean LoggedOut;
     private final Container container = getContentPane();
     private final JLabel userLabel = new JLabel("USERNAME");
     private final JLabel passwordLabel = new JLabel("PASSWORD");
+    private final JButton goBack = new JButton("Go Back to Sing In");
     private final JTextField userTextField = new JTextField();
     private final JPasswordField passwordField = new JPasswordField();
     private final JButton registerButton = new JButton("REGISTER");
@@ -22,12 +25,17 @@ public class RegisterFrame extends JFrame {
         this.setResizable(false);
         this.setBounds(10,10,370,600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        LoggedOut = false;
 
         setLayoutManager();
         setLocationAndSize();
         addComponentsToContainer();
         addActionEvent(); //calling addActionEvent() method
 
+    }
+
+    public boolean getLoggedOut() {
+        return LoggedOut;
     }
 
     private void setLayoutManager()
@@ -45,6 +53,7 @@ public class RegisterFrame extends JFrame {
         passwordField.setBounds(150,200,150,30);
         showPassword.setBounds(150,230,150,30);
         registerButton.setBounds(150,300,100,30);
+        goBack.setBounds(150,400,100,30);
     }
 
     private void addComponentsToContainer()
@@ -57,6 +66,7 @@ public class RegisterFrame extends JFrame {
         container.add(registerButton);
         container.add(userTypeComboBox);
         container.add(userTypeLabel);
+        container.add(goBack);
     }
 
     private void addActionEvent()
@@ -68,6 +78,10 @@ public class RegisterFrame extends JFrame {
             } else {
                 passwordField.setEchoChar('*');
             }
+        });
+        goBack.addActionListener(e -> {
+            dispose();
+            LoggedOut = true;
         });
 
         // adding Action listener to the registerButton button

@@ -15,7 +15,7 @@ import java.security.spec.KeySpec;
 import java.util.Base64;
 
 public class Authentication {
-    private final String databasePath = "/run/media/2021/SEF/PROJECT/user_info/userCredentials.json";
+    private final String databasePath = "C:/Users/Liviu/Desktop/JAVA/Projectululu/userCredentials.json";
 
     public Authentication() {
     }
@@ -47,7 +47,44 @@ public class Authentication {
         // if it gets till here, something went wrong
         return null;
     }
+    /**
+     * This method checks if a user already exists with the given data
+     * @param username and password introduced by the user
+     * @return True if the user was found in the database
+     */
+    public boolean VerifyData(String username,String password)
+    {
+        String pas = searchPassword(username);
+        if ( pas.equals("") )
+             return false;
+        if ( checkPassword(password,pas) )
+            return true;
+        return false;
 
+    }
+
+    private String searchPassword(String username)
+    {
+        try (FileReader reader = new FileReader(databasePath)) {
+            // Read from the .json file line by line -> .ndjson style
+            BufferedReader buffReader =new BufferedReader(reader);
+            String line;
+
+            while((line = buffReader.readLine()) != null) {
+                Object o = new JSONParser().parse(line);
+                JSONObject obj = (JSONObject) o;
+
+                String objectUsername = (String) obj.get("username");
+
+                if(username.equals(objectUsername))
+                    return (String) obj.get("password");
+            }
+
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 
     private boolean checkPassword(String pass_plaintext, String hashedPassword) {
         if(hashedPassword == null)
