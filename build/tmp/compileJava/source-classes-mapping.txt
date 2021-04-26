@@ -7,3 +7,7 @@ SingInFrame.java
  SingInFrame$1
 Main.java
  Main
+CompanyFrame.java
+ CompanyFrame
+CompanyPrintPanel.java
+ CompanyPrintPanel
