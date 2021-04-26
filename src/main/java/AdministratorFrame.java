@@ -411,7 +411,7 @@ public class AdministratorFrame extends JFrame {
             case 1 -> errorLabel.setText("*One of the fields was left empty");
             case 2 -> errorLabel.setText("*Student already exists in the database");
             case 3 -> errorLabel.setText("*The student was not yet registered");
-            case 4 -> errorLabel.setText("* The grade introduced is not valid");
+            case 4 -> errorLabel.setText("*The grade introduced is not valid");
             default -> errorLabel.setText("*Invalid error_number");
         }
     }

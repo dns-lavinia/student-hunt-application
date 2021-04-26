@@ -1,11 +1,13 @@
 Authentication.java
  Authentication
+AdministratorFrame.java
+ AdministratorFrame
+RegisterFrame.java
+ RegisterFrame
 SingInFrame.java
  SingInFrame
  SingInFrame$1
-RegisterFrame.java
- RegisterFrame
-AdministratorFrame.java
- AdministratorFrame
 Main.java
  Main
+StudentFrame.java
+ StudentFrame
