@@ -12,6 +12,7 @@ public class AdministratorFrame extends JFrame {
     private final JButton addStudentButton = new JButton("ADD STUDENT");
     private final JButton updateDetailsButton = new JButton("UPDATE STUDENT DETAILS");
     private final JButton logoutButton = new JButton("LOGOUT");
+    private final JButton deleteButton = new JButton("DELETE STUDENT");
     private final String databasePath = "/run/media/2021/SEF/PROJECT/user_info/studentDetails.ndjson";
 
 
@@ -39,6 +40,7 @@ public class AdministratorFrame extends JFrame {
     {
         addStudentButton.setBounds(60,150,250,30);
         updateDetailsButton.setBounds(60,200,250,30);
+        deleteButton.setBounds(60, 250, 250, 30);
         logoutButton.setBounds(60, 500, 250, 30);
     }
 
@@ -46,8 +48,8 @@ public class AdministratorFrame extends JFrame {
     {
         container.add(addStudentButton);
         container.add(updateDetailsButton);
+        container.add(deleteButton);
         container.add(logoutButton);
-
     }
 
     private void addActionEvent()
@@ -58,6 +60,7 @@ public class AdministratorFrame extends JFrame {
             // make the button invisible for now
             container.remove(updateDetailsButton);
             container.remove(addStudentButton);
+            container.remove(deleteButton);
 
             // create some new fields etc
             JLabel surnameLabel = new JLabel("SURNAME");
@@ -120,6 +123,7 @@ public class AdministratorFrame extends JFrame {
             // make the button invisible for now
             container.remove(updateDetailsButton);
             container.remove(addStudentButton);
+            container.remove(deleteButton);
 
             // create some new fields etc
             JLabel surnameLabel = new JLabel("SURNAME");
@@ -206,6 +210,70 @@ public class AdministratorFrame extends JFrame {
                 gradeTextField.setText("");
                 
             });
+        });
+
+        deleteButton.addActionListener(e -> {
+            // make the button invisible for now
+            container.remove(updateDetailsButton);
+            container.remove(addStudentButton);
+            container.remove(deleteButton);
+
+            // create some new fields etc
+            JLabel surnameLabel = new JLabel("SURNAME");
+            JLabel nameLabel = new JLabel("NAME");
+            JTextField nameTextField = new JTextField();
+            JTextField surnameTextField = new JTextField();
+            JButton deleteStudentButton = new JButton("DELETE");
+            JButton doneButton = new JButton("DONE");
+
+
+            // set the location and size
+            nameLabel.setBounds(60, 150, 100, 30);
+            nameTextField.setBounds(60, 180, 250, 30);
+            surnameLabel.setBounds(60, 210, 250, 30);
+            surnameTextField.setBounds(60, 240, 250, 30);
+            deleteStudentButton.setBounds(60, 270, 125, 30);
+            doneButton.setBounds(185, 270, 125, 30);
+            container.add(nameTextField);
+            container.add(nameLabel);
+            container.add(surnameLabel);
+            container.add(surnameTextField);
+            container.add(deleteStudentButton);
+            container.add(doneButton);
+
+            // Repaint the current container to properly show the new components
+            container.repaint();
+            container.revalidate();
+
+
+            // add action listeners for buttons and for the TextFields
+            // add an action listener for the add button and for the done button
+            deleteStudentButton.addActionListener(e1 -> {
+                // if the button is pressed, check in the database if the student already exists, and if
+                // not, add it to the database
+                String name = nameTextField.getText();
+                String surname = surnameTextField.getText();
+
+                System.out.println(name + " " + surname);
+
+                // if one or neither of the text fields for name and surname doesn't contain data, print error message
+                if(name.equals("") || surname.equals("")) {
+                    printErrorMessage(1);
+                    return;
+                }
+
+                if(existInDatabase(name, surname, true) == null) {
+                    printErrorMessage(3);
+                }
+
+                // set the text fields to empty strings
+                nameTextField.setText("");
+                surnameTextField.setText("");
+
+            });
+
+            // If the done button is pressed, go back to the initial GUI
+            doneButton.addActionListener(e1 -> paintInitUI());
         });
 
         // Logout the user if the user presses the corresponding button, also closing the Administrator window
@@ -381,5 +449,7 @@ public class AdministratorFrame extends JFrame {
             case 4 -> errorLabel.setText("* The grade introduced is not valid");
             default -> errorLabel.setText("*Invalid error_number");
         }
+
+
     }
 }

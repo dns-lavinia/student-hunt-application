@@ -1,5 +1,6 @@
 SingInFrame.java
  SingInFrame
+ SingInFrame$1
 Authentication.java
  Authentication
 RegisterFrame.java
