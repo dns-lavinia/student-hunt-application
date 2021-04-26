@@ -57,9 +57,7 @@ public class Authentication {
         String pas = searchPassword(username);
         if ( pas.equals("") )
              return false;
-        if ( checkPassword(password,pas) )
-            return true;
-        return false;
+        return checkPassword(password, pas);
 
     }
 
@@ -182,7 +180,7 @@ public class Authentication {
             e.printStackTrace();
         }
 
-        // if it gets till here it means that it either is an exception, or the user does not exist in the databse
+        // if it gets till here it means that it either is an exception, or the user does not exist in the database
         return false;
     }
 }

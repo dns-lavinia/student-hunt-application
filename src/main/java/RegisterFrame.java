@@ -1,9 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowEvent;
 
 public class RegisterFrame extends JFrame {
-    private boolean LoggedOut;
     private final Container container = getContentPane();
     private final JLabel userLabel = new JLabel("USERNAME");
     private final JLabel passwordLabel = new JLabel("PASSWORD");
@@ -25,17 +23,12 @@ public class RegisterFrame extends JFrame {
         this.setResizable(false);
         this.setBounds(10,10,370,600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        LoggedOut = false;
 
         setLayoutManager();
         setLocationAndSize();
         addComponentsToContainer();
         addActionEvent(); //calling addActionEvent() method
 
-    }
-
-    public boolean getLoggedOut() {
-        return LoggedOut;
     }
 
     private void setLayoutManager()
@@ -71,7 +64,7 @@ public class RegisterFrame extends JFrame {
 
     private void addActionEvent()
     {
-        // adding Action listener to the showPassword checkbox
+        // Adding Action listener to the showPassword checkbox
         showPassword.addActionListener(e -> {
             if (showPassword.isSelected()) {
                 passwordField.setEchoChar((char) 0);
@@ -79,10 +72,7 @@ public class RegisterFrame extends JFrame {
                 passwordField.setEchoChar('*');
             }
         });
-        goBack.addActionListener(e -> {
-            dispose();
-            LoggedOut = true;
-        });
+        goBack.addActionListener(e -> dispose());
 
         // adding Action listener to the registerButton button
         registerButton.addActionListener(e -> {
@@ -122,7 +112,7 @@ public class RegisterFrame extends JFrame {
         });
     }
 
-    // a username should have only letters, numbers, dashes and points
+    // A username should have only letters, numbers, dashes and points
     private boolean isValidUsername(String username) {
         for(int i = 0; i < username.length(); ++i) {
             char c = username.charAt(i);
@@ -138,9 +128,9 @@ public class RegisterFrame extends JFrame {
     private void tryRegistering(String chosenUser, String username, String password) {
         Authentication a = new Authentication();
 
-        // try and register the user with the given credentials
+        // Try and register the user with the given credentials
         if(a.registerUser(chosenUser, username, password)) {
-            // print in the RegisterFrame the message that the account was created successfully
+            // Print in the RegisterFrame the message that the account was created successfully
             JLabel successLabel = new JLabel();
             successLabel.setForeground(new Color(0, 200, 0));
             successLabel.setBounds(50, 80, 300, 20);
@@ -154,34 +144,27 @@ public class RegisterFrame extends JFrame {
         }
     }
 
-    // this method will print various error messages based on the errors
-    // error_number -> 1 : one of the boxes was left empty, cannot register
-    //              -> 2 : invalid username format
-    //              -> 3 : the user with the given username already exists, cannot register user
+
+    /**
+     * This method will print various error messages based on the errors
+     * @param error_number It represents the error code based on which error messages are printed in the gui<br>
+     *                     1 -> one of the boxes was left empty, cannot register
+     *                     2 -> invalid username format
+     *                     3 -> the user with the given username already exists, cannot register user
+     */
     private void printErrorMessage(int error_number) {
         // create a JLabel above all of the information, make it red
         JLabel errorLabel = new JLabel();
         errorLabel.setForeground(Color.red);
         errorLabel.setBounds(50, 80, 300, 20);
         container.add(errorLabel);
+        errorLabel.setOpaque(true);
 
         switch (error_number) {
-            case 1 -> {
-                errorLabel.setOpaque(true);
-                errorLabel.setText("*One of the fields was left empty");
-            }
-            case 2 -> {
-                errorLabel.setOpaque(true);
-                errorLabel.setText("*Invalid username: use a-z/A-z/0-9/-/.");
-            }
-            case 3 -> {
-                errorLabel.setOpaque(true);
-                errorLabel.setText("*Account already exists");
-            }
-            default -> {
-                errorLabel.setOpaque(true);
-                errorLabel.setText("*Invalid error_number");
-            }
+            case 1 -> errorLabel.setText("*One of the fields was left empty");
+            case 2 -> errorLabel.setText("*Invalid username: use a-z/A-z/0-9/-/.");
+            case 3 -> errorLabel.setText("*Account already exists");
+            default -> errorLabel.setText("*Invalid error_number");
         }
     }
 }

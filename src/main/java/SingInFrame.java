@@ -91,8 +91,8 @@ class SingInFrame extends JFrame  {
             Authentication a = new Authentication();
             if ( a.VerifyData(userText,pwdText) )
             {
-                ///succesful
-                System.out.println("succes");
+                ///successful
+                System.out.println("success");
             }
             else
             {

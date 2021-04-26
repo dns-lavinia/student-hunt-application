@@ -9,10 +9,9 @@ import java.io.*;
 public class AdministratorFrame extends JFrame {
 
     private final Container container = getContentPane();
-    private final JButton addStudentButton = new JButton("ADD STUDENT");
+    private final JButton addOrDeleteStudentButton = new JButton("ADD/DELETE STUDENT");
     private final JButton updateDetailsButton = new JButton("UPDATE STUDENT DETAILS");
     private final JButton logoutButton = new JButton("LOGOUT");
-    private final JButton deleteButton = new JButton("DELETE STUDENT");
     private final String databasePath = "/run/media/2021/SEF/PROJECT/user_info/studentDetails.ndjson";
 
 
@@ -38,29 +37,26 @@ public class AdministratorFrame extends JFrame {
 
     private void setLocationAndSize()
     {
-        addStudentButton.setBounds(60,150,250,30);
+        addOrDeleteStudentButton.setBounds(60,150,250,30);
         updateDetailsButton.setBounds(60,200,250,30);
-        deleteButton.setBounds(60, 250, 250, 30);
         logoutButton.setBounds(60, 500, 250, 30);
     }
 
     private void addComponentsToContainer()
     {
-        container.add(addStudentButton);
+        container.add(addOrDeleteStudentButton);
         container.add(updateDetailsButton);
-        container.add(deleteButton);
         container.add(logoutButton);
     }
 
     private void addActionEvent()
     {
         // adding Action listener to the addStudentButton button
-        addStudentButton.addActionListener(e -> {
+        addOrDeleteStudentButton.addActionListener(e -> {
 
-            // make the button invisible for now
+            // remove the initial buttons for now
             container.remove(updateDetailsButton);
-            container.remove(addStudentButton);
-            container.remove(deleteButton);
+            container.remove(addOrDeleteStudentButton);
 
             // create some new fields etc
             JLabel surnameLabel = new JLabel("SURNAME");
@@ -68,6 +64,7 @@ public class AdministratorFrame extends JFrame {
             JTextField nameTextField = new JTextField();
             JTextField surnameTextField = new JTextField();
             JButton addButton = new JButton("ADD");
+            JButton deleteStudentButton = new JButton("DELETE");
             JButton doneButton = new JButton("DONE");
 
 
@@ -77,12 +74,15 @@ public class AdministratorFrame extends JFrame {
             surnameLabel.setBounds(60, 210, 250, 30);
             surnameTextField.setBounds(60, 240, 250, 30);
             addButton.setBounds(60, 270, 125, 30);
-            doneButton.setBounds(185, 270, 125, 30);
+            deleteStudentButton.setBounds(185, 270, 125, 30);
+            doneButton.setBounds(60, 300, 250, 30);
+
             container.add(nameTextField);
             container.add(nameLabel);
             container.add(surnameLabel);
             container.add(surnameTextField);
             container.add(addButton);
+            container.add(deleteStudentButton);
             container.add(doneButton);
 
             // Repaint the current container to properly show the new components
@@ -91,7 +91,7 @@ public class AdministratorFrame extends JFrame {
 
 
             // add action listeners for buttons and for the TextFields
-            // add an action listener for the add button and for the done button
+            // add an action listener for the add button and for the add button
             addButton.addActionListener(e1 -> {
                 // if the button is pressed, check in the database if the student already exists, and if
                 // not, add it to the database
@@ -104,12 +104,41 @@ public class AdministratorFrame extends JFrame {
                     return;
                 }
 
-
                 addToDatabase(name, surname);
 
                 // set the text fields to empty strings
                 nameTextField.setText("");
                 surnameTextField.setText("");
+
+                // Notify the user that the student was added with success
+                printSuccessMessage(1);
+
+            });
+
+
+            // add an action listener for the add button and for the delete button
+            deleteStudentButton.addActionListener(e1 -> {
+                // if the button is pressed, check in the database if the student already exists, and if
+                // not, add it to the database
+                String name = nameTextField.getText();
+                String surname = surnameTextField.getText();
+
+                // if one or neither of the text fields for name and surname doesn't contain data, print error message
+                if(name.equals("") || surname.equals("")) {
+                    printErrorMessage(1);
+                    return;
+                }
+
+                if(existInDatabase(name, surname, true) == null) {
+                    printErrorMessage(3);
+                }
+
+                // set the text fields to empty strings
+                nameTextField.setText("");
+                surnameTextField.setText("");
+
+                // Notify the user that the student was deleted with success
+                printSuccessMessage(2);
 
             });
 
@@ -120,10 +149,9 @@ public class AdministratorFrame extends JFrame {
         // add Action listener for the updateStudentDetails button
         updateDetailsButton.addActionListener(e -> {
 
-            // make the button invisible for now
+            // Remove the initial buttons for now
             container.remove(updateDetailsButton);
-            container.remove(addStudentButton);
-            container.remove(deleteButton);
+            container.remove(addOrDeleteStudentButton);
 
             // create some new fields etc
             JLabel surnameLabel = new JLabel("SURNAME");
@@ -208,72 +236,11 @@ public class AdministratorFrame extends JFrame {
                 nameTextField.setText("");
                 surnameTextField.setText("");
                 gradeTextField.setText("");
+
+                // Notify the user that the student's details were updated with success
+                printSuccessMessage(3);
                 
             });
-        });
-
-        deleteButton.addActionListener(e -> {
-            // make the button invisible for now
-            container.remove(updateDetailsButton);
-            container.remove(addStudentButton);
-            container.remove(deleteButton);
-
-            // create some new fields etc
-            JLabel surnameLabel = new JLabel("SURNAME");
-            JLabel nameLabel = new JLabel("NAME");
-            JTextField nameTextField = new JTextField();
-            JTextField surnameTextField = new JTextField();
-            JButton deleteStudentButton = new JButton("DELETE");
-            JButton doneButton = new JButton("DONE");
-
-
-            // set the location and size
-            nameLabel.setBounds(60, 150, 100, 30);
-            nameTextField.setBounds(60, 180, 250, 30);
-            surnameLabel.setBounds(60, 210, 250, 30);
-            surnameTextField.setBounds(60, 240, 250, 30);
-            deleteStudentButton.setBounds(60, 270, 125, 30);
-            doneButton.setBounds(185, 270, 125, 30);
-            container.add(nameTextField);
-            container.add(nameLabel);
-            container.add(surnameLabel);
-            container.add(surnameTextField);
-            container.add(deleteStudentButton);
-            container.add(doneButton);
-
-            // Repaint the current container to properly show the new components
-            container.repaint();
-            container.revalidate();
-
-
-            // add action listeners for buttons and for the TextFields
-            // add an action listener for the add button and for the done button
-            deleteStudentButton.addActionListener(e1 -> {
-                // if the button is pressed, check in the database if the student already exists, and if
-                // not, add it to the database
-                String name = nameTextField.getText();
-                String surname = surnameTextField.getText();
-
-                System.out.println(name + " " + surname);
-
-                // if one or neither of the text fields for name and surname doesn't contain data, print error message
-                if(name.equals("") || surname.equals("")) {
-                    printErrorMessage(1);
-                    return;
-                }
-
-                if(existInDatabase(name, surname, true) == null) {
-                    printErrorMessage(3);
-                }
-
-                // set the text fields to empty strings
-                nameTextField.setText("");
-                surnameTextField.setText("");
-
-            });
-
-            // If the done button is pressed, go back to the initial GUI
-            doneButton.addActionListener(e1 -> paintInitUI());
         });
 
         // Logout the user if the user presses the corresponding button, also closing the Administrator window
@@ -308,8 +275,15 @@ public class AdministratorFrame extends JFrame {
         // Add to the selected student, a new subject entry
         obj.put(subject, grade);
 
+        // Add in the database the object
+        writeToDatabase(obj);
+    }
 
-
+    /**
+     * This method writes in the .ndjson file one object
+     * @param obj This objects represents one entry that is to be added in the database
+     */
+    private void writeToDatabase(JSONObject obj) {
         // Open the JSON file and search in it, and if the user with the same username is not found, continue
         try(FileWriter file = new FileWriter(databasePath, true)) {
 
@@ -342,17 +316,8 @@ public class AdministratorFrame extends JFrame {
             studentDetails.put("name", name);
             studentDetails.put("surname", surname);
 
-            // Open the JSON file and search in it, and if the user with the same username is not found, continue
-            try(FileWriter file = new FileWriter(databasePath, true)) {
-
-                file.write(studentDetails.toJSONString());
-                file.write('\n');
-
-                file.flush();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            // Add in the database the newly added student
+            writeToDatabase(studentDetails);
         }
     }
 
@@ -378,6 +343,7 @@ public class AdministratorFrame extends JFrame {
                 String objectSurname = (String) obj.get("surname");
 
                 if(name.equals(objectName) && surname.equals(objectSurname)) {
+                    // If the flag is set, remove the obj entry from the ndjson file
                     if(flagRemove)
                         removeEntry(obj);
 
@@ -425,7 +391,6 @@ public class AdministratorFrame extends JFrame {
         }
     }
 
-
     /**
      * This method prints to the current frame different error messages.
      * @param error_number It represent the error code that will display different messages to the user <br>
@@ -449,7 +414,28 @@ public class AdministratorFrame extends JFrame {
             case 4 -> errorLabel.setText("* The grade introduced is not valid");
             default -> errorLabel.setText("*Invalid error_number");
         }
+    }
 
+    /**
+     * This methods prints to the GUI some success messages
+     * @param success_number It represents the success code <br>
+     *                       1 -> The student was added with success in the database <br>
+     *                       2 -> The student was deleted with success from the database <br>
+     *                       3 -> The student's status was updated
+     */
+    private void printSuccessMessage(int success_number) {
+        // create a JLabel above all of the information, make it red
+        JLabel successLabel = new JLabel();
+        successLabel.setForeground(new Color(0, 200, 0));
+        successLabel.setBounds(60, 80, 300, 20);
+        container.add(successLabel);
+        successLabel.setOpaque(true);
 
+        switch (success_number) {
+            case 1 -> successLabel.setText("*Student added successfully");
+            case 2 -> successLabel.setText("*Student was deleted successfully");
+            case 3 -> successLabel.setText("*Student's status was updated");
+            default -> successLabel.setText("*Invalid success_number");
+        }
     }
 }
