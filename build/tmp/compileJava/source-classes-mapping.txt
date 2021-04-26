@@ -9,3 +9,7 @@ AdministratorFrame.java
  AdministratorFrame
 Main.java
  Main
+CompanyFrame.java
+ CompanyFrame
+CompanyPrintPanel.java
+ CompanyPrintPanel

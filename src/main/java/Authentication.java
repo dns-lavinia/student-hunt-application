@@ -15,7 +15,7 @@ import java.security.spec.KeySpec;
 import java.util.Base64;
 
 public class Authentication {
-    private final String databasePath = "C:/Users/Liviu/Desktop/JAVA/Projectululu/userCredentials.json";
+    private final String databasePath = "C:/Users/Liviu/Desktop/JAVA/Projectululu/userCredentials.ndjson";
 
     public Authentication() {
     }
