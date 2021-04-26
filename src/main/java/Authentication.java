@@ -54,14 +54,14 @@ public class Authentication {
      */
     public boolean VerifyData(String username,String password)
     {
-        String pas = searchPassword(username);
+        String pas = searchType(username,"password");
         if ( pas.equals("") )
              return false;
         return checkPassword(password, pas);
 
     }
 
-    private String searchPassword(String username)
+    public String searchType(String username,String type)
     {
         try (FileReader reader = new FileReader(databasePath)) {
             // Read from the .json file line by line -> .ndjson style
@@ -75,7 +75,7 @@ public class Authentication {
                 String objectUsername = (String) obj.get("username");
 
                 if(username.equals(objectUsername))
-                    return (String) obj.get("password");
+                    return (String) obj.get(type);
             }
 
         } catch (IOException | ParseException e) {

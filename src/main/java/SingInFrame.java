@@ -85,14 +85,40 @@ class SingInFrame extends JFrame  {
         signinButton.addActionListener(e -> {
             String userText;
             String pwdText;
+
             userText = userTextField.getText();
             pwdText = String.valueOf(passwordField.getPassword());
 
             Authentication a = new Authentication();
             if ( a.VerifyData(userText,pwdText) )
             {
-                ///successful
-                System.out.println("success");
+                this.setVisible(false);
+                String type = a.searchType(userText,"userType");
+                if ( type.equals("Company") )
+                {
+                    CompanyFrame c1 = new CompanyFrame();
+                    c1.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            setVisOnTrue();
+                        }
+                    }
+                    );
+                }
+                else if ( type.equals("Administrator") )
+                {
+                    AdministratorFrame a1 = new AdministratorFrame();
+                    a1.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            setVisOnTrue();
+                        }
+                    }
+                    );
+                }
+                //else
+                    //StudentFrame s1
+                System.out.println(type);
             }
             else
             {

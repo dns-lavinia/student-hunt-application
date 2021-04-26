@@ -1,15 +1,18 @@
+AdministratorFrame.java
+ AdministratorFrame
 Authentication.java
  Authentication
+RegisterFrame.java
+ RegisterFrame
 SingInFrame.java
  SingInFrame
  SingInFrame$1
-RegisterFrame.java
- RegisterFrame
-AdministratorFrame.java
- AdministratorFrame
+ SingInFrame$2
+ SingInFrame$3
 Main.java
  Main
 CompanyFrame.java
  CompanyFrame
+ CompanyFrame$1
 CompanyPrintPanel.java
  CompanyPrintPanel
