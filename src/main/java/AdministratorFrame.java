@@ -372,8 +372,10 @@ public class AdministratorFrame extends JFrame {
 
             while((line = br.readLine()) != null)
             {
+                Object o = new JSONParser().parse(line);
+                JSONObject ob = (JSONObject) o;
                 // If the line to be deleted is found, skip it
-                if(line.equals(obj.toString()))
+                if( ob.equals(obj) )
                     continue;
 
                 sb.append(line).append("\n");

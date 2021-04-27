@@ -7,33 +7,41 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Vector;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.*;
 
 class CompanyPrintPanel extends JFrame {
 
     private final String databasePath = "C:/Users/Liviu/Desktop/JAVA/Projectululu/studentDetails.ndjson";
     private Vector<String> v = new Vector<>();
-    private final Container container = getContentPane();
+    //private final Container container = getContentPane();
+    private JPanel panel = new JPanel();
+
+
 
     CompanyPrintPanel() {
-        this.setTitle("Solutiaa boss Form");
+        this.setTitle("Company Frame");
         this.setVisible(true);
-        this.setResizable(false);
         this.setBounds(10, 10, 370, 600);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        container.setLayout(null);
+
+
     }
 
     private void display() {
-        //this.setLayout(new GridLayout(v.size(),1));
-        JLabel label=new JLabel();
+        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
         for ( int i = 0 ; i < v.size() ; i++ )
         {
-            label.setText(v.get(i));
-            label.setBounds(20,20,100,10);
-            container.add(label);
+            JLabel label=new JLabel();
+            label.setText(v.get(i)+"\n");
+            label.setBounds(15,15+i*20,100,10);
+            panel.add(label);
+            panel.repaint();
+            panel.revalidate();
         }
+        JScrollPane jScrollPane = new JScrollPane(panel);
+        jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        this.getContentPane().add(jScrollPane);
     }
     /**
      * This method searchs in the data base for all students that meet certain conditions
@@ -44,7 +52,7 @@ class CompanyPrintPanel extends JFrame {
      */
     public void searchData(String userData,String searchingType,String subj)
     {
-        double grade = userData.indexOf(0)*10 + userData.indexOf(1);
+        double grade = Double.parseDouble(userData);
 
         String srch;
         if ( searchingType.equals("Subject") )
@@ -59,15 +67,15 @@ class CompanyPrintPanel extends JFrame {
             while((line = buffReader.readLine()) != null) {
                 Object o = new JSONParser().parse(line);
                 JSONObject obj = (JSONObject) o;
-
+                //System.out.println(obj);
                 String objectSearch = (String) obj.get(srch);
                 if ( objectSearch == null )
                     continue;
-                double gradeObject = objectSearch.indexOf(0) * 10 + objectSearch.indexOf(1);
-                if (gradeObject >= grade) {
+                double gr = Double.parseDouble(objectSearch);
+                if (gr >= grade) {
 
                     v.add(obj.get("name") + " " + srch + " " + objectSearch);
-                    System.out.println(v);
+                    //System.out.println(obj + " " + grade);
                 }
 
             }

@@ -1,11 +1,17 @@
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 class SingInFrame extends JFrame  {
-
+    private final String databasePath = "C:/Users/Liviu/Desktop/JAVA/Projectululu/userCredentials.json";
     Container container = getContentPane();
     JLabel userLabel = new JLabel("USERNAME");
     JLabel passwordLabel = new JLabel("PASSWORD");
@@ -85,6 +91,7 @@ class SingInFrame extends JFrame  {
         signinButton.addActionListener(e -> {
             String userText;
             String pwdText;
+            String nm="",surnm="";
 
             userText = userTextField.getText();
             pwdText = String.valueOf(passwordField.getPassword());
@@ -116,9 +123,33 @@ class SingInFrame extends JFrame  {
                     }
                     );
                 }
-                //else
-                    //StudentFrame s1
-                System.out.println(type);
+                else
+                {
+
+                    try (FileReader reader = new FileReader(databasePath)) {
+                        // Read from the .json file line by line -> .ndjson style
+                        BufferedReader buffReader =new BufferedReader(reader);
+                        String line;
+
+                        while((line = buffReader.readLine()) != null) {
+                            Object o = new JSONParser().parse(line);
+                            JSONObject obj = (JSONObject) o;
+
+                            String objectUsername = (String) obj.get("username");
+
+                            if(userText.equals(objectUsername))
+                            {
+                                nm = (String) obj.get("name");
+                                surnm = (String) obj.get("surname");
+                            }
+                        }
+
+                    } catch (IOException | ParseException e1) {
+                        e1.printStackTrace();
+                    }
+                    StudentFrame s1 = new StudentFrame(nm,surnm);
+                }
+                System.out.println(type + " " + nm + " " + surnm);
             }
             else
             {

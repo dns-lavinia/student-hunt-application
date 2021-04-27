@@ -4,17 +4,18 @@ Authentication.java
  Authentication
 RegisterFrame.java
  RegisterFrame
+Main.java
+ Main
+CompanyPrintPanel.java
+ CompanyPrintPanel
+CompanyFrame.java
+ CompanyFrame
+ CompanyFrame$1
 SingInFrame.java
  SingInFrame
  SingInFrame$1
  SingInFrame$2
  SingInFrame$3
-Main.java
- Main
 StudentFrame.java
  StudentFrame
-CompanyFrame.java
- CompanyFrame
- CompanyFrame$1
-CompanyPrintPanel.java
- CompanyPrintPanel
+ StudentFrame$1

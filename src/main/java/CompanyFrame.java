@@ -78,7 +78,10 @@ public class CompanyFrame extends JFrame {
         userTypeComboBox.addActionListener(e -> {
             String s = (String) userTypeComboBox.getSelectedItem();
             if ( s.equals("Subject") )
+            {
                 container.add(userSubject);
+                container.revalidate();
+            }
             else {
                 container.remove(userSubject);
                 container.repaint();

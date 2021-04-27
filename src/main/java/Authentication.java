@@ -61,6 +61,7 @@ public class Authentication {
 
     }
 
+
     private String searchPassword(String username)
     {
         try (FileReader reader = new FileReader(databasePath)) {

@@ -4,6 +4,8 @@ import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -58,6 +60,11 @@ public class StudentFrame extends JFrame{
         container.add(logoutButton);
     }
 
+    private void setVisOnTrue()
+    {
+        this.setVisible(true);
+    }
+
     private void addActionEvent()
     {
         // If the logout button is pressed, go back to SignIn Frame
@@ -68,17 +75,37 @@ public class StudentFrame extends JFrame{
         viewGradesButton.addActionListener(e -> {
             JSONObject obj;
             // search in the student database
-            if((obj = existInDatabase(name, surname)) == null) {
+            if((obj = existInDatabase(name, surname,false)) == null) {
                 printErrorMessage(2);
                 return;
             }
 
             // If everything went well during the search, get the grades of the student
+            this.setVisible(false);
+            JFrame frame = new JFrame();
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    setVisOnTrue();
+                }
+            }
+            );
+            frame.setTitle("Student Form");
+            frame.setVisible(true);
+            frame.setBounds(10, 10, 370, 600);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setLayout(null);
+            int i = 0 ;
             for (Object key : obj.keySet()) {
                 if(key.equals("name") || key.equals("surname") || key.equals("status") || key.equals("telephone"))
                     continue;
-
-                System.out.println("Subject: " + key + ": " + obj.get(key));
+                JLabel label=new JLabel();
+                label.setText(key + " " + obj.get(key));
+                label.setBounds(15,15+i*20,100,10);
+                i++;
+                frame.add(label);
+                frame.repaint();
+                frame.revalidate();
             }
         });
         updateDetailsButton.addActionListener(e -> {
@@ -87,13 +114,8 @@ public class StudentFrame extends JFrame{
             container.remove(viewGradesButton);
 
             // create some new fields etc
-            JLabel surnameLabel = new JLabel("SURNAME");
-            JLabel nameLabel = new JLabel("NAME");
             JLabel subjectLabel = new JLabel("Field");
             JLabel gradeLabel = new JLabel("Text");
-            JTextField nameTextField = new JTextField();
-            JTextField surnameTextField = new JTextField();
-            JButton updateForButton = new JButton("UPDATE FOR THIS STUDENT");
 
             String[] userType = {"STATUS", "TELEPHONE"};
             JComboBox<String> subjectComboBox = new JComboBox<>(userType);
@@ -103,11 +125,6 @@ public class StudentFrame extends JFrame{
 
 
             // set the location and size
-            nameLabel.setBounds(60, 150, 250, 30);
-            nameTextField.setBounds(60, 180, 250, 30);
-            surnameLabel.setBounds(60, 210, 250, 30);
-            surnameTextField.setBounds(60, 240, 250, 30);
-            updateForButton.setBounds(60, 270, 250, 30);
             subjectLabel.setBounds(60, 300, 250, 30);
             subjectComboBox.setBounds(60, 330, 250, 30);
             gradeLabel.setBounds(60, 360, 125, 30);
@@ -116,11 +133,6 @@ public class StudentFrame extends JFrame{
             doneButton.setBounds(185, 390, 125, 30);
 
             // Add the new components to the container
-            container.add(nameTextField);
-            container.add(nameLabel);
-            container.add(surnameLabel);
-            container.add(surnameTextField);
-            container.add(updateForButton);
             container.add(subjectLabel);
             container.add(subjectComboBox);
             container.add(gradeLabel);
@@ -138,8 +150,6 @@ public class StudentFrame extends JFrame{
             // Add functionality for the ADD button
             addButton.addActionListener(e1 -> {
                 // get the info from the text fields
-                String name = nameTextField.getText();
-                String surname = surnameTextField.getText();
                 String grade = gradeTextField.getText();
                 String subject = null;
 
@@ -162,8 +172,6 @@ public class StudentFrame extends JFrame{
                 addUpdateToDatabase(name, surname, subject, grade);
 
                 // set the text fields to empty strings
-                nameTextField.setText("");
-                surnameTextField.setText("");
                 gradeTextField.setText("");
 
                 // Notify the user that the student's details were updated with success
@@ -181,7 +189,7 @@ public class StudentFrame extends JFrame{
         container.repaint();
     }
 
-    private JSONObject existInDatabase(String name, String surname) {
+    private JSONObject existInDatabase(String name, String surname,boolean flag) {
         try (FileReader reader = new FileReader(databasePath)) {
             // Read from the .json file line by line -> .ndjson style
             BufferedReader buffReader = new BufferedReader(reader);
@@ -194,8 +202,11 @@ public class StudentFrame extends JFrame{
                 String objectName = (String) obj.get("name");
                 String objectSurname = (String) obj.get("surname");
 
-                if(name.equals(objectName) && surname.equals(objectSurname))
+                if(name.equals(objectName) && surname.equals(objectSurname)) {
+                    if ( flag )
+                        removeEntry(obj);
                     return obj;
+                }
             }
         } catch (IOException | ParseException e) {
             e.printStackTrace();
@@ -205,10 +216,42 @@ public class StudentFrame extends JFrame{
         return null;
     }
 
+    private void removeEntry(JSONObject obj) {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(databasePath));
+
+            // Buffer to store contents of the database
+            StringBuilder sb = new StringBuilder();
+            String line;
+
+            while((line = br.readLine()) != null)
+            {
+                Object o = new JSONParser().parse(line);
+                JSONObject ob = (JSONObject) o;
+                // If the line to be deleted is found, skip it
+                if(ob.equals(obj)) {
+                    System.out.println(line + " " + obj.toString());
+                    continue;
+                }
+                sb.append(line).append("\n");
+            }
+
+            br.close();
+            FileWriter fw = new FileWriter(databasePath);
+
+            // Write into the file
+            fw.write(sb.toString());
+            fw.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void addUpdateToDatabase(String name, String surname, String subject, String grade) {
         JSONObject obj;
         // Check if the student with the given name and surname exists in the database, and if no, print error message
-        if((obj = existInDatabase(name, surname)) == null) {
+        if((obj = existInDatabase(name, surname,true)) == null) {
             printErrorMessage(3);
             return;
         }
