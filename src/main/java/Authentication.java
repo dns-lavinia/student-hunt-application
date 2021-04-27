@@ -15,7 +15,7 @@ import java.security.spec.KeySpec;
 import java.util.Base64;
 
 public class Authentication {
-    private final String databasePath = "C:/Users/Liviu/Desktop/JAVA/Projectululu/userCredentials.ndjson";
+    private final String databasePath = "/run/media/2021/SEF/PROJECT/user_info/userCredentials.ndjson";
 
     public Authentication() {
     }
@@ -54,14 +54,14 @@ public class Authentication {
      */
     public boolean VerifyData(String username,String password)
     {
-        String pas = searchType(username,"password");
+        String pas = searchPassword(username);
         if ( pas.equals("") )
              return false;
         return checkPassword(password, pas);
 
     }
 
-    public String searchType(String username,String type)
+    private String searchPassword(String username)
     {
         try (FileReader reader = new FileReader(databasePath)) {
             // Read from the .json file line by line -> .ndjson style
@@ -75,7 +75,7 @@ public class Authentication {
                 String objectUsername = (String) obj.get("username");
 
                 if(username.equals(objectUsername))
-                    return (String) obj.get(type);
+                    return (String) obj.get("password");
             }
 
         } catch (IOException | ParseException e) {
@@ -123,7 +123,7 @@ public class Authentication {
      * @return Method returns true if the account was successfully created and false if the account already exists
      */
     @SuppressWarnings("unchecked")
-    public boolean registerUser(String chosenUser, String username, String password) {
+    public boolean registerUser(String chosenUser, String username, String password, String name, String surname) {
         // generate the hashed password using PBKDF2
         String hashedPassword = hashPassword(password);
 
@@ -134,6 +134,8 @@ public class Authentication {
         userDetails.put("password", hashedPassword);
         userDetails.put("username", username);
         userDetails.put("userType", chosenUser);
+        userDetails.put("name", name);
+        userDetails.put("surname", surname);
 
         // Check if the user with the given username already exists in the database
         // If it does, return false, because the user cannot register with the same username
