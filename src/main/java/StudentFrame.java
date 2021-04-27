@@ -175,7 +175,7 @@ public class StudentFrame extends JFrame{
                 gradeTextField.setText("");
 
                 // Notify the user that the student's details were updated with success
-                //printSuccessMessage(3);
+                printSuccessMessage();
 
             });
         });
@@ -297,5 +297,16 @@ public class StudentFrame extends JFrame{
             case 3 -> errorLabel.setText("*The grade introduced is not valid");
             default -> errorLabel.setText("*Invalid error_number");
         }
+    }
+    private void printSuccessMessage() {
+        // create a JLabel above all of the information, make it red
+        JLabel successLabel = new JLabel();
+        successLabel.setForeground(new Color(0, 200, 0));
+        successLabel.setBounds(60, 80, 300, 20);
+        container.add(successLabel);
+        successLabel.setOpaque(true);
+
+        successLabel.setText("*Student's status was updated");
+
     }
 }

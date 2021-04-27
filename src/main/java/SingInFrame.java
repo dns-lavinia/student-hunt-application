@@ -148,6 +148,12 @@ class SingInFrame extends JFrame  {
                         e1.printStackTrace();
                     }
                     StudentFrame s1 = new StudentFrame(nm,surnm);
+                    s1.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            setVisOnTrue();
+                        }
+                    });
                 }
                 System.out.println(type + " " + nm + " " + surnm);
             }
