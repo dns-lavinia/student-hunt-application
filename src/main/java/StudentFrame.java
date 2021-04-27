@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class StudentFrame extends JFrame{
@@ -17,7 +18,7 @@ public class StudentFrame extends JFrame{
 
     private final String name;
     private final String surname;
-    private final String databasePath = "/run/media/2021/SEF/PROJECT/user_info/studentDetails.ndjson";
+    private final String databasePath = "C:/Users/Liviu/Desktop/JAVA/Projectululu/studentDetails.ndjson";
 
 
     public StudentFrame(String name, String surname)
@@ -80,6 +81,104 @@ public class StudentFrame extends JFrame{
                 System.out.println("Subject: " + key + ": " + obj.get(key));
             }
         });
+        updateDetailsButton.addActionListener(e -> {
+            // Remove the initial buttons for now
+            container.remove(updateDetailsButton);
+            container.remove(viewGradesButton);
+
+            // create some new fields etc
+            JLabel surnameLabel = new JLabel("SURNAME");
+            JLabel nameLabel = new JLabel("NAME");
+            JLabel subjectLabel = new JLabel("Field");
+            JLabel gradeLabel = new JLabel("Text");
+            JTextField nameTextField = new JTextField();
+            JTextField surnameTextField = new JTextField();
+            JButton updateForButton = new JButton("UPDATE FOR THIS STUDENT");
+
+            String[] userType = {"STATUS", "TELEPHONE"};
+            JComboBox<String> subjectComboBox = new JComboBox<>(userType);
+            JTextField gradeTextField = new JTextField();
+            JButton addButton = new JButton("ADD");
+            JButton doneButton = new JButton("DONE");
+
+
+            // set the location and size
+            nameLabel.setBounds(60, 150, 250, 30);
+            nameTextField.setBounds(60, 180, 250, 30);
+            surnameLabel.setBounds(60, 210, 250, 30);
+            surnameTextField.setBounds(60, 240, 250, 30);
+            updateForButton.setBounds(60, 270, 250, 30);
+            subjectLabel.setBounds(60, 300, 250, 30);
+            subjectComboBox.setBounds(60, 330, 250, 30);
+            gradeLabel.setBounds(60, 360, 125, 30);
+            gradeTextField.setBounds(130, 360, 125, 30);
+            addButton.setBounds(60, 390, 125, 30);
+            doneButton.setBounds(185, 390, 125, 30);
+
+            // Add the new components to the container
+            container.add(nameTextField);
+            container.add(nameLabel);
+            container.add(surnameLabel);
+            container.add(surnameTextField);
+            container.add(updateForButton);
+            container.add(subjectLabel);
+            container.add(subjectComboBox);
+            container.add(gradeLabel);
+            container.add(gradeTextField);
+            container.add(addButton);
+            container.add(doneButton);
+
+            // Repaint the current container to properly show the new components
+            container.repaint();
+            container.revalidate();
+
+            // If the done button is pressed, go back to the initial GUI
+            doneButton.addActionListener(e1 -> paintInitUI());
+
+            // Add functionality for the ADD button
+            addButton.addActionListener(e1 -> {
+                // get the info from the text fields
+                String name = nameTextField.getText();
+                String surname = surnameTextField.getText();
+                String grade = gradeTextField.getText();
+                String subject = null;
+
+                Object t = subjectComboBox.getSelectedItem();
+
+                if(t != null)
+                    subject = t.toString();
+                    // if the subject was not chose, it is safe to say that that field was left empty
+                else
+                    printErrorMessage(1);
+
+                // If one of the fields was left empty, print an error message
+                if(subject == null || (name.equals("")) || surname.equals("") || grade.equals("")) {
+                    printErrorMessage(1);
+                    return;
+                }
+
+                // Check if the grade introduced is valid, if not, print an error message
+
+                addUpdateToDatabase(name, surname, subject, grade);
+
+                // set the text fields to empty strings
+                nameTextField.setText("");
+                surnameTextField.setText("");
+                gradeTextField.setText("");
+
+                // Notify the user that the student's details were updated with success
+                //printSuccessMessage(3);
+
+            });
+        });
+    }
+
+    private void paintInitUI() {
+        container.removeAll();
+
+        addComponentsToContainer();
+
+        container.repaint();
     }
 
     private JSONObject existInDatabase(String name, String surname) {
@@ -104,6 +203,34 @@ public class StudentFrame extends JFrame{
 
         // if it gets till here it means that it either is an exception, or the user does not exist in the database
         return null;
+    }
+
+    private void addUpdateToDatabase(String name, String surname, String subject, String grade) {
+        JSONObject obj;
+        // Check if the student with the given name and surname exists in the database, and if no, print error message
+        if((obj = existInDatabase(name, surname)) == null) {
+            printErrorMessage(3);
+            return;
+        }
+
+        // Add to the selected student, a new subject entry
+        obj.put(subject, grade);
+
+        // Add in the database the object
+        writeToDatabase(obj);
+    }
+    private void writeToDatabase(JSONObject obj) {
+        // Open the JSON file and search in it, and if the user with the same username is not found, continue
+        try(FileWriter file = new FileWriter(databasePath, true)) {
+
+            file.write(obj.toJSONString());
+            file.write('\n');
+
+            file.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

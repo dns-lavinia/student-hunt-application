@@ -2,6 +2,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,15 +12,17 @@ import javax.swing.JLabel;
 
 class CompanyPrintPanel extends JFrame {
 
-    private final String databasePath = "/run/media/2021/SEF/PROJECT/user_info/studentDetails.ndjson";
+    private final String databasePath = "C:/Users/Liviu/Desktop/JAVA/Projectululu/studentDetails.ndjson";
     private Vector<String> v = new Vector<>();
+    private final Container container = getContentPane();
 
     CompanyPrintPanel() {
         this.setTitle("Solutiaa boss Form");
         this.setVisible(true);
         this.setResizable(false);
         this.setBounds(10, 10, 370, 600);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        container.setLayout(null);
     }
 
     private void display() {
@@ -29,7 +32,7 @@ class CompanyPrintPanel extends JFrame {
         {
             label.setText(v.get(i));
             label.setBounds(20,20,100,10);
-            this.add(label);
+            container.add(label);
         }
     }
     /**
