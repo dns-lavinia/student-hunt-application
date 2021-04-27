@@ -3,9 +3,13 @@ import java.awt.*;
 
 public class RegisterFrame extends JFrame {
     private final Container container = getContentPane();
+    private final JLabel nameLabel = new JLabel("NAME");
+    private final JLabel surnameLabel = new JLabel("SURNAME");
     private final JLabel userLabel = new JLabel("USERNAME");
     private final JLabel passwordLabel = new JLabel("PASSWORD");
     private final JButton goBack = new JButton("Go Back to Sing In");
+    private final JTextField nameTextField = new JTextField();
+    private final JTextField surnameTextField = new JTextField();
     private final JTextField userTextField = new JTextField();
     private final JPasswordField passwordField = new JPasswordField();
     private final JButton registerButton = new JButton("REGISTER");
@@ -38,19 +42,27 @@ public class RegisterFrame extends JFrame {
 
     private void setLocationAndSize()
     {
+        nameLabel.setBounds(50, 150, 100, 30);
+        surnameLabel.setBounds(50, 180, 100, 30);
+        nameTextField.setBounds(150, 150, 150, 30);
+        surnameTextField.setBounds(150, 180, 150, 30);
         userTypeLabel.setBounds(50, 100, 100, 30);
-        userLabel.setBounds(50,150,100,30);
-        passwordLabel.setBounds(50,200,100,30);
+        userLabel.setBounds(50,210,100,30);
+        passwordLabel.setBounds(50,240,100,30);
         userTypeComboBox.setBounds(150, 100, 150, 30);
-        userTextField.setBounds(150,150,150,30);
-        passwordField.setBounds(150,200,150,30);
-        showPassword.setBounds(150,230,150,30);
+        userTextField.setBounds(150,210,150,30);
+        passwordField.setBounds(150,240,150,30);
+        showPassword.setBounds(150,270,150,30);
         registerButton.setBounds(150,300,100,30);
-        goBack.setBounds(150,400,100,30);
+        goBack.setBounds(80,400,200,30);
     }
 
     private void addComponentsToContainer()
     {
+        container.add(nameLabel);
+        container.add(surnameLabel);
+        container.add(nameTextField);
+        container.add(surnameTextField);
         container.add(userLabel);
         container.add(passwordLabel);
         container.add(userTextField);
@@ -85,6 +97,12 @@ public class RegisterFrame extends JFrame {
             if(t != null)
                 type = t.toString();
 
+            // get the name introduced by the user
+            String name = nameTextField.getText();
+
+            // get the surname introduced by the user
+            String surname = surnameTextField.getText();
+
             // get the username inputted by the user
             String username = userTextField.getText();
 
@@ -93,13 +111,14 @@ public class RegisterFrame extends JFrame {
             String password = String.valueOf(passwordField.getPassword());
 
             // if all the fields are completed with information, check the information and register the user
-            if(type != null && !(username.equals("")) && !(password.equals(""))) {
+            if(type != null && !(username.equals("")) && !(password.equals("")) && !(name.equals("")) &&
+                    !(surname.equals(""))) {
                 // if everything was ok, check if the username is not yet in the database and that it has only letters
                 // numbers, dashes and points, add to the new 'database' as a new entry
                 if(isValidUsername(username)) {
 
                     // if the username is valid, put it the json file if it is not already there
-                    tryRegistering(type, username, password);
+                    tryRegistering(type, username, password, name, surname);
                 }
                 else {
                     printErrorMessage(2);
@@ -125,11 +144,11 @@ public class RegisterFrame extends JFrame {
         return true;
     }
 
-    private void tryRegistering(String chosenUser, String username, String password) {
+    private void tryRegistering(String chosenUser, String username, String password, String name, String surname) {
         Authentication a = new Authentication();
 
         // Try and register the user with the given credentials
-        if(a.registerUser(chosenUser, username, password)) {
+        if(a.registerUser(chosenUser, username, password, name, surname)) {
             // Print in the RegisterFrame the message that the account was created successfully
             JLabel successLabel = new JLabel();
             successLabel.setForeground(new Color(0, 200, 0));

@@ -3,6 +3,7 @@ public class Main {
 
 //        SingInFrame frame = new SingInFrame();
 //        AdministratorFrame frame = new AdministratorFrame();
-        StudentFrame frame = new StudentFrame("Lavinia", "Dinis");
+//        StudentFrame frame = new StudentFrame("Lavinia", "Dinis");
+        RegisterFrame frame = new RegisterFrame();
     }
 }

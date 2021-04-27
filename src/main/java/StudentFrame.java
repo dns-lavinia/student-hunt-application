@@ -14,6 +14,7 @@ public class StudentFrame extends JFrame{
     private final JButton viewGradesButton = new JButton("VIEW GRADES");
     private final JButton logoutButton = new JButton("LOGOUT");
 
+
     private final String name;
     private final String surname;
     private final String databasePath = "/run/media/2021/SEF/PROJECT/user_info/studentDetails.ndjson";
