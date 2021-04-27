@@ -148,9 +148,9 @@ public class RegisterFrame extends JFrame {
     /**
      * This method will print various error messages based on the errors
      * @param error_number It represents the error code based on which error messages are printed in the gui<br>
-     *                     1 -> one of the boxes was left empty, cannot register
-     *                     2 -> invalid username format
-     *                     3 -> the user with the given username already exists, cannot register user
+     *                     1 -> one of the boxes was left empty, cannot register <br>
+     *                     2 -> invalid username format <br>
+     *                     3 -> the user with the given username already exists, cannot register user <br>
      */
     private void printErrorMessage(int error_number) {
         // create a JLabel above all of the information, make it red
