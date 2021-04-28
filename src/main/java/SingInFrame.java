@@ -155,7 +155,7 @@ class SingInFrame extends JFrame  {
                         }
                     });
                 }
-                System.out.println(type + " " + nm + " " + surnm);
+                //System.out.println(type + " " + nm + " " + surnm);
             }
             else
             {

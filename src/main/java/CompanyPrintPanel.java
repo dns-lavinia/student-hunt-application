@@ -2,7 +2,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -44,11 +43,11 @@ class CompanyPrintPanel extends JFrame {
         this.getContentPane().add(jScrollPane);
     }
     /**
-     * This method searchs in the data base for all students that meet certain conditions
+     * This method search in the data base for all students that meet certain conditions
      * and prints the result on another frame
      * @param userData data introduced by the user
      * @param searchingType type of search
-     * @param subj "" if we seacrhing by the average grade or a subject otherwise
+     * @param subj "" if we searching by the average grade or a subject otherwise
      */
     public void searchData(String userData,String searchingType,String subj)
     {
@@ -67,17 +66,28 @@ class CompanyPrintPanel extends JFrame {
             while((line = buffReader.readLine()) != null) {
                 Object o = new JSONParser().parse(line);
                 JSONObject obj = (JSONObject) o;
-                //System.out.println(obj);
                 String objectSearch = (String) obj.get(srch);
-                if ( objectSearch == null )
-                    continue;
-                double gr = Double.parseDouble(objectSearch);
-                if (gr >= grade) {
+//                if ( objectSearch == null )
+//                    continue;
+                if ( searchingType.equals("Subject") ) {
+                    double gr = Double.parseDouble(objectSearch);
+                    if (gr >= grade) {
 
-                    v.add(obj.get("name") + " " + srch + " " + objectSearch);
-                    //System.out.println(obj + " " + grade);
+                        v.add(obj.get("name") + " " + srch + " " + objectSearch);
+                        //System.out.println(obj + " " + grade);
+                    }
                 }
-
+                else
+                {
+                    double gr=0;
+                    for (Object key : obj.keySet()) {
+                        if(key.equals("name") || key.equals("surname") || key.equals("status") || key.equals("telephone"))
+                            continue;
+                        gr = gr + Double.parseDouble((String)obj.get(key));
+                    }
+                    if ( gr/6 >= grade )
+                        v.add(obj.get("name") + " " + gr/6 );
+                }
             }
             display();
 

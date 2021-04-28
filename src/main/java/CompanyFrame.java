@@ -59,7 +59,7 @@ public class CompanyFrame extends JFrame {
         okButton.addActionListener(e -> {
             String userText;
             userText = userTextField.getText();
-            if ( verify(userText) == false )
+            if ( !verify(userText)  )
                 return;
             String tp = (String) userTypeComboBox.getSelectedItem();
             String subj = "";
@@ -93,6 +93,10 @@ public class CompanyFrame extends JFrame {
     private boolean verify(String grade)
     {
         try {
+            if ( grade.equals("") ) {
+                printError();
+                return false;
+            }
             double gr = Double.parseDouble(grade);
             // Check if the grade is between 0 and 10
             if ( gr > 10.0 || gr < 0.0 )
@@ -109,7 +113,7 @@ public class CompanyFrame extends JFrame {
         errorLabel.setBounds(50, 80, 300, 20);
         container.add(errorLabel);
         errorLabel.setOpaque(true);
-        errorLabel.setText("Introduced text is not a number");
+        errorLabel.setText("Introduced number is not a valid grade");
     }
 
 }

@@ -75,7 +75,7 @@ public class StudentFrame extends JFrame{
         viewGradesButton.addActionListener(e -> {
             JSONObject obj;
             // search in the student database
-            if((obj = existInDatabase(name, surname,false)) == null) {
+            if((obj = existInDatabase(false)) == null) {
                 printErrorMessage(2);
                 return;
             }
@@ -117,7 +117,7 @@ public class StudentFrame extends JFrame{
             JLabel subjectLabel = new JLabel("Field");
             JLabel gradeLabel = new JLabel("Text");
 
-            String[] userType = {"STATUS", "TELEPHONE"};
+            String[] userType = {"status", "telephone"};
             JComboBox<String> subjectComboBox = new JComboBox<>(userType);
             JTextField gradeTextField = new JTextField();
             JButton addButton = new JButton("ADD");
@@ -150,7 +150,7 @@ public class StudentFrame extends JFrame{
             // Add functionality for the ADD button
             addButton.addActionListener(e1 -> {
                 // get the info from the text fields
-                String grade = gradeTextField.getText();
+                String text = gradeTextField.getText();
                 String subject = null;
 
                 Object t = subjectComboBox.getSelectedItem();
@@ -162,14 +162,36 @@ public class StudentFrame extends JFrame{
                     printErrorMessage(1);
 
                 // If one of the fields was left empty, print an error message
-                if(subject == null || (name.equals("")) || surname.equals("") || grade.equals("")) {
+                if(subject == null || text.equals("")) {
                     printErrorMessage(1);
                     return;
                 }
 
+                if ( subject.equals("telephone") ) {
+                    if (text.length() != 10 || text.charAt(0) != '0') {
+                        printErrorMessage(2);
+                        return;
+                    }
+                    for (int i = 0; i <= 9; i++) {
+                        if (text.charAt(i) > '9' || text.charAt(i) < '0') {
+                            printErrorMessage(2);
+                            return;
+                        }
+                    }
+
+                }
+                else
+                {
+
+                    if ( !(text.equals("hired") || text.equals("not hired")) ) {
+                        printErrorMessage(4);
+                        return;
+                    }
+                }
+
                 // Check if the grade introduced is valid, if not, print an error message
 
-                addUpdateToDatabase(name, surname, subject, grade);
+                addUpdateToDatabase(subject, text);
 
                 // set the text fields to empty strings
                 gradeTextField.setText("");
@@ -189,7 +211,7 @@ public class StudentFrame extends JFrame{
         container.repaint();
     }
 
-    private JSONObject existInDatabase(String name, String surname,boolean flag) {
+    private JSONObject existInDatabase(boolean flag) {
         try (FileReader reader = new FileReader(databasePath)) {
             // Read from the .json file line by line -> .ndjson style
             BufferedReader buffReader = new BufferedReader(reader);
@@ -230,7 +252,7 @@ public class StudentFrame extends JFrame{
                 JSONObject ob = (JSONObject) o;
                 // If the line to be deleted is found, skip it
                 if(ob.equals(obj)) {
-                    System.out.println(line + " " + obj.toString());
+                    //System.out.println(line + " " + obj.toString());
                     continue;
                 }
                 sb.append(line).append("\n");
@@ -248,16 +270,17 @@ public class StudentFrame extends JFrame{
         }
     }
 
-    private void addUpdateToDatabase(String name, String surname, String subject, String grade) {
+    private void addUpdateToDatabase(String subject, String data) {
         JSONObject obj;
+
         // Check if the student with the given name and surname exists in the database, and if no, print error message
-        if((obj = existInDatabase(name, surname,true)) == null) {
+        if((obj = existInDatabase(true)) == null) {
             printErrorMessage(3);
             return;
         }
 
         // Add to the selected student, a new subject entry
-        obj.put(subject, grade);
+        obj.put(subject,data);
 
         // Add in the database the object
         writeToDatabase(obj);
@@ -280,8 +303,9 @@ public class StudentFrame extends JFrame{
      * This method prints to the current frame different error messages.
      * @param error_number It represent the error code that will display different messages to the user <br>
      *                     1 -> One of the boxes was left empty <br>
-     *                     2 -> The student was not found in the database <br>
-     *                     3 -> The grade introduced is not valid
+     *                     2 -> Incorrect telephone was introduced <br>
+     *                     3 -> The student was not found in the database <br>
+     *                     4 -> Incorrect status inserted
      */
     private void printErrorMessage(int error_number) {
         // create a JLabel above all of the information, make it red
@@ -293,13 +317,13 @@ public class StudentFrame extends JFrame{
 
         switch (error_number) {
             case 1 -> errorLabel.setText("*One of the fields was left empty");
-            case 2 -> errorLabel.setText("*The student was not yet registered");
-            case 3 -> errorLabel.setText("*The grade introduced is not valid");
-            default -> errorLabel.setText("*Invalid error_number");
+            case 2 -> errorLabel.setText("*Incorrect telephone : use 0 + 9 more digits");
+            case 3 -> errorLabel.setText("*The student was not yet registered");
+            default -> errorLabel.setText("Write either <hired> or <not hired>");
         }
     }
     private void printSuccessMessage() {
-        // create a JLabel above all of the information, make it red
+        // create a JLabel above all of the information, make it green
         JLabel successLabel = new JLabel();
         successLabel.setForeground(new Color(0, 200, 0));
         successLabel.setBounds(60, 80, 300, 20);
