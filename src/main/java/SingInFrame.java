@@ -11,7 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 class SingInFrame extends JFrame  {
-    private final String databasePath = "C:/Users/Liviu/Desktop/JAVA/Projectululu/userCredentials.ndjson";
+    private final String databasePath = "/run/media/2021/SEF/PROJECT/user_info/userCredentials.ndjson";
     Container container = getContentPane();
     JLabel userLabel = new JLabel("USERNAME");
     JLabel passwordLabel = new JLabel("PASSWORD");

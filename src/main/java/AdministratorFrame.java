@@ -12,7 +12,7 @@ public class AdministratorFrame extends JFrame {
     private final JButton addOrDeleteStudentButton = new JButton("ADD/DELETE STUDENT");
     private final JButton updateDetailsButton = new JButton("UPDATE STUDENT DETAILS");
     private final JButton logoutButton = new JButton("LOGOUT");
-    private final String databasePath = "C:/Users/Liviu/Desktop/JAVA/Projectululu/studentDetails.ndjson";
+    private final String databasePath = "/run/media/2021/SEF/PROJECT/user_info/genStudentDetails2.ndjson";
 
 
     public AdministratorFrame()
@@ -104,15 +104,13 @@ public class AdministratorFrame extends JFrame {
                     return;
                 }
 
-                addToDatabase(name, surname);
+                // Notify the user that the student was added with success
+                if(addToDatabase(name, surname))
+                    printSuccessMessage(1);
 
                 // set the text fields to empty strings
                 nameTextField.setText("");
                 surnameTextField.setText("");
-
-                // Notify the user that the student was added with success
-                printSuccessMessage(1);
-
             });
 
 
@@ -160,7 +158,6 @@ public class AdministratorFrame extends JFrame {
             JLabel gradeLabel = new JLabel("GRADE");
             JTextField nameTextField = new JTextField();
             JTextField surnameTextField = new JTextField();
-            JButton updateForButton = new JButton("UPDATE FOR THIS STUDENT");
 
             String[] userType = {"ADA", "CC", "CO", "SEF", "OS", "CN"};
             JComboBox<String> subjectComboBox = new JComboBox<>(userType);
@@ -174,7 +171,6 @@ public class AdministratorFrame extends JFrame {
             nameTextField.setBounds(60, 180, 250, 30);
             surnameLabel.setBounds(60, 210, 250, 30);
             surnameTextField.setBounds(60, 240, 250, 30);
-            updateForButton.setBounds(60, 270, 250, 30);
             subjectLabel.setBounds(60, 300, 250, 30);
             subjectComboBox.setBounds(60, 330, 250, 30);
             gradeLabel.setBounds(60, 360, 125, 30);
@@ -187,7 +183,6 @@ public class AdministratorFrame extends JFrame {
             container.add(nameLabel);
             container.add(surnameLabel);
             container.add(surnameTextField);
-            container.add(updateForButton);
             container.add(subjectLabel);
             container.add(subjectComboBox);
             container.add(gradeLabel);
@@ -229,17 +224,13 @@ public class AdministratorFrame extends JFrame {
                     printErrorMessage(4);
                     return;
                 }
-                
-                addUpdateToDatabase(name, surname, subject, grade);
-
-                // set the text fields to empty strings
-                nameTextField.setText("");
-                surnameTextField.setText("");
-                gradeTextField.setText("");
 
                 // Notify the user that the student's details were updated with success
-                printSuccessMessage(3);
-                
+                if(addUpdateToDatabase(name, surname, subject, grade))
+                    printSuccessMessage(3);
+
+                // set the grade text field to empty string
+                gradeTextField.setText("");
             });
         });
 
@@ -264,12 +255,12 @@ public class AdministratorFrame extends JFrame {
     }
 
     @SuppressWarnings("unchecked")
-    private void addUpdateToDatabase(String name, String surname, String subject, String grade) {
+    private boolean addUpdateToDatabase(String name, String surname, String subject, String grade) {
         JSONObject obj;
         // Check if the student with the given name and surname exists in the database, and if no, print error message
         if((obj = existInDatabase(name, surname, true)) == null) {
             printErrorMessage(3);
-            return;
+            return false;
         }
 
         // Add to the selected student, a new subject entry
@@ -277,6 +268,8 @@ public class AdministratorFrame extends JFrame {
 
         // Add in the database the object
         writeToDatabase(obj);
+
+        return true;
     }
 
     /**
@@ -307,9 +300,10 @@ public class AdministratorFrame extends JFrame {
     }
 
     @SuppressWarnings("unchecked")
-    private void addToDatabase(String name, String surname) {
+    private boolean addToDatabase(String name, String surname) {
         if((existInDatabase(name, surname, false)) != null) {
             printErrorMessage(2);
+            return false;
         }
         else {
             JSONObject studentDetails = new JSONObject();
@@ -318,6 +312,7 @@ public class AdministratorFrame extends JFrame {
 
             // Add in the database the newly added student
             writeToDatabase(studentDetails);
+            return true;
         }
     }
 
