@@ -1,13 +1,11 @@
 AdministratorFrame.java
  AdministratorFrame
-Authentication.java
- Authentication
 RegisterFrame.java
  RegisterFrame
 Main.java
  Main
-CompanyPrintPanel.java
- CompanyPrintPanel
+Authentication.java
+ Authentication
 StudentFrame.java
  StudentFrame
  StudentFrame$1
@@ -20,3 +18,5 @@ SingInFrame.java
 CompanyFrame.java
  CompanyFrame
  CompanyFrame$1
+CompanyPrintPanel.java
+ CompanyPrintPanel

@@ -66,10 +66,10 @@ class CompanyPrintPanel extends JFrame {
             while((line = buffReader.readLine()) != null) {
                 Object o = new JSONParser().parse(line);
                 JSONObject obj = (JSONObject) o;
-                String objectSearch = (String) obj.get(srch);
-//                if ( objectSearch == null )
-//                    continue;
                 if ( searchingType.equals("Subject") ) {
+                    String objectSearch = (String) obj.get(srch);
+                    if ( objectSearch == null )
+                        continue;
                     double gr = Double.parseDouble(objectSearch);
                     if (gr >= grade) {
 
@@ -80,13 +80,15 @@ class CompanyPrintPanel extends JFrame {
                 else
                 {
                     double gr=0;
+                    int nr_subjects=0;
                     for (Object key : obj.keySet()) {
                         if(key.equals("name") || key.equals("surname") || key.equals("status") || key.equals("telephone"))
                             continue;
                         gr = gr + Double.parseDouble((String)obj.get(key));
+                        nr_subjects++;
                     }
-                    if ( gr/6 >= grade )
-                        v.add(obj.get("name") + " " + gr/6 );
+                    if ( gr/nr_subjects >= grade )
+                        v.add(obj.get("name") + " " + gr/nr_subjects );
                 }
             }
             display();

@@ -76,7 +76,7 @@ public class StudentFrame extends JFrame{
             JSONObject obj;
             // search in the student database
             if((obj = existInDatabase(false)) == null) {
-                printErrorMessage(2);
+                printErrorMessage(3);
                 return;
             }
 

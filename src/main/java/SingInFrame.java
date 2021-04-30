@@ -11,7 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 class SingInFrame extends JFrame  {
-    private final String databasePath = "C:/Users/Liviu/Desktop/JAVA/Projectululu/userCredentials.json";
+    private final String databasePath = "C:/Users/Liviu/Desktop/JAVA/Projectululu/userCredentials.ndjson";
     Container container = getContentPane();
     JLabel userLabel = new JLabel("USERNAME");
     JLabel passwordLabel = new JLabel("PASSWORD");
@@ -134,6 +134,7 @@ class SingInFrame extends JFrame  {
                         while((line = buffReader.readLine()) != null) {
                             Object o = new JSONParser().parse(line);
                             JSONObject obj = (JSONObject) o;
+                            System.out.println(obj);
 
                             String objectUsername = (String) obj.get("username");
 
