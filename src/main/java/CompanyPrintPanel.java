@@ -74,7 +74,6 @@ class CompanyPrintPanel extends JFrame {
                     if (gr >= grade) {
 
                         v.add(obj.get("name") + " " + srch + " " + objectSearch);
-                        //System.out.println(obj + " " + grade);
                     }
                 }
                 else

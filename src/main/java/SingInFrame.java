@@ -134,7 +134,6 @@ class SingInFrame extends JFrame  {
                         while((line = buffReader.readLine()) != null) {
                             Object o = new JSONParser().parse(line);
                             JSONObject obj = (JSONObject) o;
-                            System.out.println(obj);
 
                             String objectUsername = (String) obj.get("username");
 
@@ -156,7 +155,6 @@ class SingInFrame extends JFrame  {
                         }
                     });
                 }
-                //System.out.println(type + " " + nm + " " + surnm);
             }
             else
             {

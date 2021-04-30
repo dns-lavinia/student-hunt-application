@@ -149,6 +149,12 @@ public class StudentFrame extends JFrame{
 
             // Add functionality for the ADD button
             addButton.addActionListener(e1 -> {
+                JSONObject obj;
+                // search in the student database
+                if((obj = existInDatabase(false)) == null) {
+                    printErrorMessage(3);
+                    return;
+                }
                 // get the info from the text fields
                 String text = gradeTextField.getText();
                 String subject = null;
