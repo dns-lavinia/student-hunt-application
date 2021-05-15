@@ -15,7 +15,7 @@ import java.security.spec.KeySpec;
 import java.util.Base64;
 
 public class Authentication {
-    private final String databasePath = "/run/media/2021/SEF/PROJECT/user_info/userCredentials.ndjson";
+    private final String databasePath = "userCredentials.ndjson";
 
     public Authentication() {
     }

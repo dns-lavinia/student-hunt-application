@@ -10,7 +10,7 @@ import javax.swing.*;
 
 class CompanyPrintPanel extends JFrame {
 
-    private final String databasePath = "/run/media/2021/SEF/PROJECT/user_info/genStudentDetails2.ndjson";
+    private final String databasePath = "studentDetails.ndjson";
     private Vector<String> v = new Vector<>();
     //private final Container container = getContentPane();
     private JPanel panel = new JPanel();

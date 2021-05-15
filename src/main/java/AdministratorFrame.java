@@ -12,7 +12,7 @@ public class AdministratorFrame extends JFrame {
     private final JButton addOrDeleteStudentButton = new JButton("ADD/DELETE STUDENT");
     private final JButton updateDetailsButton = new JButton("UPDATE STUDENT DETAILS");
     private final JButton logoutButton = new JButton("LOGOUT");
-    private final String databasePath = "/run/media/2021/SEF/PROJECT/user_info/genStudentDetails2.ndjson";
+    private final String databasePath = "studentDetails.ndjson";
 
 
     public AdministratorFrame()

@@ -20,7 +20,7 @@ public class StudentFrame extends JFrame{
 
     private final String name;
     private final String surname;
-    private final String databasePath = "/run/media/2021/SEF/PROJECT/user_info/genStudentDetails2.ndjson";
+    private final String databasePath = "studentDetails.ndjson";
 
 
     public StudentFrame(String name, String surname)
