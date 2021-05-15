@@ -22,8 +22,6 @@ class CompanyPrintPanel extends JFrame {
         this.setVisible(true);
         this.setBounds(10, 10, 370, 600);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-
     }
 
     private void display() {
@@ -45,8 +43,8 @@ class CompanyPrintPanel extends JFrame {
     /**
      * This method search in the data base for all students that meet certain conditions
      * and prints the result on another frame
-     * @param userData data introduced by the user
-     * @param searchingType type of search
+     * @param userData data introduced by the user (a grade)
+     * @param searchingType type of search : by subject or average grade
      * @param subj "" if we searching by the average grade or a subject otherwise
      */
     public void searchData(String userData,String searchingType,String subj)
@@ -54,6 +52,7 @@ class CompanyPrintPanel extends JFrame {
         double grade = Double.parseDouble(userData);
 
         String srch;
+
         if ( searchingType.equals("Subject") )
             srch = subj;
         else
@@ -72,7 +71,6 @@ class CompanyPrintPanel extends JFrame {
                         continue;
                     double gr = Double.parseDouble(objectSearch);
                     if (gr >= grade) {
-
                         v.add(obj.get("name") + " " + srch + " " + objectSearch);
                     }
                 }

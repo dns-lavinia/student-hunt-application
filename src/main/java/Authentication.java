@@ -15,7 +15,7 @@ import java.security.spec.KeySpec;
 import java.util.Base64;
 
 public class Authentication {
-    private final String databasePath = "userCredentials.ndjson";
+    private final static String databasePath = "userCredentials.ndjson";
 
     public Authentication() {
     }
@@ -25,7 +25,7 @@ public class Authentication {
      * @param pass_plaintext The plaintext of the password introduced by the user
      * @return On success, a byte array is returned with the hashed password, otherwise null is returned
      */
-    private String hashPassword(String pass_plaintext) {
+    private static String hashPassword(String pass_plaintext) {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
         random.nextBytes(salt);
@@ -52,7 +52,7 @@ public class Authentication {
      * @param username and password introduced by the user
      * @return True if the user was found in the database
      */
-    public boolean VerifyData(String username,String password)
+    public static boolean VerifyData(String username,String password)
     {
         String pas = searchPassword(username);
         if ( pas.equals("") )
@@ -62,7 +62,7 @@ public class Authentication {
     }
 
 
-    private String searchPassword(String username)
+    private static String searchPassword(String username)
     {
         try (FileReader reader = new FileReader(databasePath)) {
             // Read from the .json file line by line -> .ndjson style
@@ -85,7 +85,7 @@ public class Authentication {
         return "";
     }
 
-    private boolean checkPassword(String pass_plaintext, String hashedPassword) {
+    private static boolean checkPassword(String pass_plaintext, String hashedPassword) {
         if(hashedPassword == null)
             throw new java.lang.IllegalArgumentException("Invalid hash provided for comparison");
 
@@ -124,7 +124,7 @@ public class Authentication {
      * @return Method returns true if the account was successfully created and false if the account already exists
      */
     @SuppressWarnings("unchecked")
-    public boolean registerUser(String chosenUser, String username, String password, String name, String surname) {
+    public static boolean registerUser(String chosenUser, String username, String password, String name, String surname) {
         // generate the hashed password using PBKDF2
         String hashedPassword = hashPassword(password);
 
@@ -162,7 +162,13 @@ public class Authentication {
         return true;
     }
 
-    public String searchType(String username,String type)
+    /**
+     * This method returns some information about the user
+     * @param username This is the username for the user that i am searching for
+     * @param type This is the type of information i am looking for
+     * @return the needed information , or "" if no user was found in the data base
+     */
+    public static String searchType(String username,String type)
     {
         try (FileReader reader = new FileReader(databasePath)) {
             // Read from the .json file line by line -> .ndjson style
@@ -185,7 +191,7 @@ public class Authentication {
         return "";
     }
 
-    private boolean userExists(String username) {
+    private static boolean userExists(String username) {
 
         try (FileReader reader = new FileReader(databasePath)) {
             // Read from the .json file line by line -> .ndjson style

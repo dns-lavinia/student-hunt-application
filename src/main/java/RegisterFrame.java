@@ -145,10 +145,10 @@ public class RegisterFrame extends JFrame {
     }
 
     private void tryRegistering(String chosenUser, String username, String password, String name, String surname) {
-        Authentication a = new Authentication();
+        //Authentication a = new Authentication();
 
         // Try and register the user with the given credentials
-        if(a.registerUser(chosenUser, username, password, name, surname)) {
+        if(Authentication.registerUser(chosenUser, username, password, name, surname)) {
             // Print in the RegisterFrame the message that the account was created successfully
             JLabel successLabel = new JLabel();
             successLabel.setForeground(new Color(0, 200, 0));

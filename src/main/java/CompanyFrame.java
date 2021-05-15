@@ -59,8 +59,10 @@ public class CompanyFrame extends JFrame {
         okButton.addActionListener(e -> {
             String userText;
             userText = userTextField.getText();
-            if ( !verify(userText)  )
+            if ( !verify(userText)  ) {
+                printError();
                 return;
+            }
             String tp = (String) userTypeComboBox.getSelectedItem();
             String subj = "";
             if ( tp.equals("Subject") )
@@ -98,9 +100,6 @@ public class CompanyFrame extends JFrame {
                 return false;
             }
             double gr = Double.parseDouble(grade);
-            // Check if the grade is between 0 and 10
-            if ( gr > 10.0 || gr < 0.0 )
-                printError();
             return 0.0 <= gr && gr <= 10.0;
         } catch(NumberFormatException e) {
             return false;
@@ -113,7 +112,7 @@ public class CompanyFrame extends JFrame {
         errorLabel.setBounds(50, 80, 300, 20);
         container.add(errorLabel);
         errorLabel.setOpaque(true);
-        errorLabel.setText("Introduced number is not a valid grade");
+        errorLabel.setText("Introduced text is not a valid grade");
     }
 
 }

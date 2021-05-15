@@ -1,22 +1,19 @@
-RegisterFrame.java
- RegisterFrame
+ProjectTest.java
+ ProjectTest
+CompanyPrintPanel.java
+ CompanyPrintPanel
 Authentication.java
  Authentication
-AdministratorFrame.java
- AdministratorFrame
+CompanyFrame.java
+ CompanyFrame
+ CompanyFrame$1
+Main.java
+ Main
+RegisterFrame.java
+ RegisterFrame
 SingInFrame.java
  SingInFrame
  SingInFrame$1
  SingInFrame$2
  SingInFrame$3
  SingInFrame$4
-Main.java
- Main
-CompanyFrame.java
- CompanyFrame
- CompanyFrame$1
-StudentFrame.java
- StudentFrame
- StudentFrame$1
-CompanyPrintPanel.java
- CompanyPrintPanel

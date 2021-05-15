@@ -96,11 +96,11 @@ class SingInFrame extends JFrame  {
             userText = userTextField.getText();
             pwdText = String.valueOf(passwordField.getPassword());
 
-            Authentication a = new Authentication();
-            if ( a.VerifyData(userText,pwdText) )
+            //Authentication a = new Authentication();
+            if ( Authentication.VerifyData(userText,pwdText) )
             {
                 this.setVisible(false);
-                String type = a.searchType(userText,"userType");
+                String type = Authentication.searchType(userText,"userType");
                 if ( type.equals("Company") )
                 {
                     CompanyFrame c1 = new CompanyFrame();
