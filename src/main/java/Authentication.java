@@ -25,7 +25,7 @@ public class Authentication {
      * @param pass_plaintext The plaintext of the password introduced by the user
      * @return On success, a byte array is returned with the hashed password, otherwise null is returned
      */
-    private static String hashPassword(String pass_plaintext) {
+    public static String hashPassword(String pass_plaintext) {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
         random.nextBytes(salt);
@@ -58,7 +58,6 @@ public class Authentication {
         if ( pas.equals("") )
              return false;
         return checkPassword(password, pas);
-
     }
 
 
@@ -85,7 +84,7 @@ public class Authentication {
         return "";
     }
 
-    private static boolean checkPassword(String pass_plaintext, String hashedPassword) {
+    public static boolean checkPassword(String pass_plaintext, String hashedPassword) {
         if(hashedPassword == null)
             throw new java.lang.IllegalArgumentException("Invalid hash provided for comparison");
 

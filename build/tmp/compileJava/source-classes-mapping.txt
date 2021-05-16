@@ -1,14 +1,12 @@
-ProjectTest.java
- ProjectTest
+AdministratorFrame.java
+ AdministratorFrame
 CompanyPrintPanel.java
  CompanyPrintPanel
-Authentication.java
- Authentication
 CompanyFrame.java
  CompanyFrame
  CompanyFrame$1
-Main.java
- Main
+Authentication.java
+ Authentication
 RegisterFrame.java
  RegisterFrame
 SingInFrame.java
@@ -17,3 +15,7 @@ SingInFrame.java
  SingInFrame$2
  SingInFrame$3
  SingInFrame$4
+Main.java
+ Main
+ProjectTest.java
+ ProjectTest

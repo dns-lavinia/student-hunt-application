@@ -6,5 +6,15 @@ public class Main {
         //AdministratorFrame frame = new AdministratorFrame();
         //StudentFrame frame = new StudentFrame("Lavinia", "Dinis");
         //RegisterFrame frame = new RegisterFrame();
+//        ProjectTest pt = new ProjectTest();
+//        try {
+//            pt.testRegistrationUser();
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//            System.out.println("tzeapa");
+//        }
+
     }
 }

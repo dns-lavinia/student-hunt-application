@@ -24,7 +24,19 @@ class CompanyPrintPanel extends JFrame {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-    private void display() {
+    private boolean display() {
+        if ( v.size() == 0 )
+        {
+            JLabel label=new JLabel();
+            label.setText("No student was found with this requirement");
+            label.setBounds(15,15,100,10);
+            panel.add(label);
+            panel.repaint();
+            panel.revalidate();
+            JScrollPane jScrollPane = new JScrollPane(panel);
+            this.getContentPane().add(jScrollPane);
+            return false;
+        }
         panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
         for ( int i = 0 ; i < v.size() ; i++ )
         {
@@ -39,6 +51,7 @@ class CompanyPrintPanel extends JFrame {
         jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         this.getContentPane().add(jScrollPane);
+        return true;
     }
     /**
      * This method search in the data base for all students that meet certain conditions
@@ -47,11 +60,16 @@ class CompanyPrintPanel extends JFrame {
      * @param searchingType type of search : by subject or average grade
      * @param subj "" if we searching by the average grade or a subject otherwise
      */
-    public void searchData(String userData,String searchingType,String subj)
+    public boolean searchData(String userData,String searchingType,String subj)
     {
         double grade = Double.parseDouble(userData);
+        if ( grade < 0.0 || grade > 10 )
+            return false;
 
         String srch;
+
+        if ( !searchingType.equals("Subject") && !searchingType.equals("Average grade") )
+            return false;
 
         if ( searchingType.equals("Subject") )
             srch = subj;
@@ -74,8 +92,7 @@ class CompanyPrintPanel extends JFrame {
                         v.add(obj.get("name") + " " + srch + " " + objectSearch);
                     }
                 }
-                else
-                {
+                else {
                     double gr=0;
                     int nr_subjects=0;
                     for (Object key : obj.keySet()) {
@@ -93,6 +110,7 @@ class CompanyPrintPanel extends JFrame {
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
+        return true;
     }
 
 }
