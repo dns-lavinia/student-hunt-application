@@ -7,8 +7,7 @@ public class ProjectTest {
         String hashed = Authentication.hashPassword("abece");
         assertNotNull(hashed);
         boolean flg = Authentication.checkPassword("abece",hashed);
-        System.out.println(flg);
-        assert(!flg);
+        assert (!flg);
     }
 
     @Test
@@ -18,7 +17,8 @@ public class ProjectTest {
         assert(!flg);
     }
 
-    @Test public void testRegistrationUser() throws Exception {
+    @Test
+    public void testRegistrationUser() throws Exception {
         boolean flg1 = Authentication.registerUser("Company","username2","pas1","name2","surname2");
         boolean flg2 = Authentication.registerUser("Company","username3","pas1","name3","surname3");
         assertTrue(flg2!=flg1);

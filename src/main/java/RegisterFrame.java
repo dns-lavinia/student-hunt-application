@@ -1,8 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class RegisterFrame extends JFrame {
-    private final Container container = getContentPane();
+public class RegisterFrame extends GeneralFrame {
     private final JLabel nameLabel = new JLabel("NAME");
     private final JLabel surnameLabel = new JLabel("SURNAME");
     private final JLabel userLabel = new JLabel("USERNAME");
@@ -22,25 +21,15 @@ public class RegisterFrame extends JFrame {
 
     RegisterFrame()
     {
+        super();
         this.setTitle("Registration Form");
-        this.setVisible(true);
-        this.setResizable(false);
-        this.setBounds(10,10,370,600);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        setLayoutManager();
         setLocationAndSize();
         addComponentsToContainer();
-        addActionEvent(); //calling addActionEvent() method
+        addActionEvent();
 
     }
 
-    private void setLayoutManager()
-    {
-        container.setLayout(null);
-    }
-
-    private void setLocationAndSize()
+    protected void setLocationAndSize()
     {
         nameLabel.setBounds(50, 150, 100, 30);
         surnameLabel.setBounds(50, 180, 100, 30);
@@ -55,9 +44,11 @@ public class RegisterFrame extends JFrame {
         showPassword.setBounds(150,270,150,30);
         registerButton.setBounds(150,300,100,30);
         goBack.setBounds(80,400,200,30);
+        container.revalidate();
+        container.repaint();
     }
 
-    private void addComponentsToContainer()
+    protected void addComponentsToContainer()
     {
         container.add(nameLabel);
         container.add(surnameLabel);
@@ -74,7 +65,7 @@ public class RegisterFrame extends JFrame {
         container.add(goBack);
     }
 
-    private void addActionEvent()
+    protected void addActionEvent()
     {
         // Adding Action listener to the showPassword checkbox
         showPassword.addActionListener(e -> {

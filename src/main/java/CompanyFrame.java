@@ -3,9 +3,8 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class CompanyFrame extends JFrame {
+public class CompanyFrame extends GeneralFrame {
 
-    Container container = getContentPane();
     JTextField userTextField = new JTextField();
     private final String[] searchingType = {"Average grade","Subject"};
     private final String[] subjectType = {"CN", "SEF","ADA","OS","CO","CC"};
@@ -17,18 +16,14 @@ public class CompanyFrame extends JFrame {
     private final JButton logoutButton = new JButton("LOGOUT");
 
     CompanyFrame ()  {
+        super();
         this.setTitle("Company searching form");
-        this.setVisible(true);
-        this.setResizable(false);
-        this.setBounds(10, 10, 370, 600);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayoutManager();
         setLocationAndSize();
         addComponentsToContainer();
         addActionEvent();
     }
 
-    private void setLocationAndSize() {
+    protected void setLocationAndSize() {
         userTextField.setBounds(140, 200, 150, 30);
         userTypeComboBox.setBounds(100, 100, 150, 30);
         okButton.setBounds(100, 300, 100, 30);
@@ -37,7 +32,7 @@ public class CompanyFrame extends JFrame {
         userLabel.setBounds(50,200,150,30);
     }
 
-    private void addComponentsToContainer()
+    protected void addComponentsToContainer()
     {
         container.add(userTextField);
         container.add(userTypeComboBox);
@@ -45,17 +40,16 @@ public class CompanyFrame extends JFrame {
         container.add(okButton);
         container.add(logoutButton);
         container.add(userLabel);
+        container.revalidate();
+        container.repaint();
     }
 
-    private void setLayoutManager() {
-        container.setLayout(null);
-    }
     private void setVisOnTrue()
     {
         this.setVisible(true);
     }
 
-    private void addActionEvent() {
+    protected void addActionEvent() {
         okButton.addActionListener(e -> {
             String userText;
             userText = userTextField.getText();

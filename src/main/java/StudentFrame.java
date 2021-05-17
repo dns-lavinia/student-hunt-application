@@ -11,8 +11,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class StudentFrame extends JFrame{
-    private final Container container = getContentPane();
+public class StudentFrame extends GeneralFrame{
     private final JButton updateDetailsButton = new JButton("UPDATE DETAILS");
     private final JButton viewGradesButton = new JButton("VIEW GRADES");
     private final JButton logoutButton = new JButton("LOGOUT");
@@ -25,39 +24,31 @@ public class StudentFrame extends JFrame{
 
     public StudentFrame(String name, String surname)
     {
+        super();
         this.name = name;
         this.surname = surname;
 
         this.setTitle("Student");
-        this.setVisible(true);
-        this.setResizable(false);
-        this.setBounds(10,10,370,600);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        setLayoutManager();
         setLocationAndSize();
         addComponentsToContainer();
-        addActionEvent(); //calling addActionEvent() method
+        addActionEvent();
 
     }
 
-    private void setLayoutManager()
-    {
-        container.setLayout(null);
-    }
-
-    private void setLocationAndSize()
+    protected void setLocationAndSize()
     {
         updateDetailsButton.setBounds(60,150,250,30);
         viewGradesButton.setBounds(60, 200, 250, 30);
         logoutButton.setBounds(60, 50, 250, 30);
     }
 
-    private void addComponentsToContainer()
+    protected void addComponentsToContainer()
     {
         container.add(updateDetailsButton);
         container.add(viewGradesButton);
         container.add(logoutButton);
+        container.revalidate();
+        container.repaint();
     }
 
     private void setVisOnTrue()
@@ -65,7 +56,7 @@ public class StudentFrame extends JFrame{
         this.setVisible(true);
     }
 
-    private void addActionEvent()
+    protected void addActionEvent()
     {
         // If the logout button is pressed, go back to SignIn Frame
         logoutButton.addActionListener(e -> dispose());

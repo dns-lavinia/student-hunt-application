@@ -10,9 +10,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-class SingInFrame extends JFrame  {
+class SingInFrame extends GeneralFrame  {
     private final String databasePath = "userCredentials.ndjson";
-    Container container = getContentPane();
     JLabel userLabel = new JLabel("USERNAME");
     JLabel passwordLabel = new JLabel("PASSWORD");
     JTextField userTextField = new JTextField();
@@ -24,23 +23,14 @@ class SingInFrame extends JFrame  {
 
 
     SingInFrame() {
+        super();
         this.setTitle("Login Form");
-        this.setVisible(true);
-        this.setResizable(false);
-        this.setBounds(10, 10, 370, 600);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayoutManager();
         setLocationAndSize();
         addComponentsToContainer();
         addActionEvent();
-
     }
 
-    private void setLayoutManager() {
-        container.setLayout(null);
-    }
-
-    private void setLocationAndSize() {
+    protected void setLocationAndSize() {
         userLabel.setBounds(50, 150, 100, 30);
         passwordLabel.setBounds(50, 220, 100, 30);
         userTextField.setBounds(150, 150, 150, 30);
@@ -52,7 +42,7 @@ class SingInFrame extends JFrame  {
 
     }
 
-    private void addComponentsToContainer() {
+    protected void addComponentsToContainer() {
         container.add(userLabel);
         container.add(passwordLabel);
         container.add(userTextField);
@@ -61,6 +51,8 @@ class SingInFrame extends JFrame  {
         container.add(signinButton);
         container.add(resetButton);
         container.add(RegisterButton);
+        container.revalidate();
+        container.repaint();
     }
 
     private void setVisOnTrue()
@@ -68,7 +60,7 @@ class SingInFrame extends JFrame  {
         this.setVisible(true);
     }
 
-    private void addActionEvent() {
+    protected void addActionEvent() {
         showPassword.addActionListener(e -> {
             if (showPassword.isSelected()) {
                 passwordField.setEchoChar((char) 0);

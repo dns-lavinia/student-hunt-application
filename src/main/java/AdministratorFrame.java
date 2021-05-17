@@ -6,50 +6,38 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 
-public class AdministratorFrame extends JFrame {
+public class AdministratorFrame extends GeneralFrame {
 
-    private final Container container = getContentPane();
     private final JButton addOrDeleteStudentButton = new JButton("ADD/DELETE STUDENT");
     private final JButton updateDetailsButton = new JButton("UPDATE STUDENT DETAILS");
     private final JButton logoutButton = new JButton("LOGOUT");
     private final String databasePath = "studentDetails.ndjson";
 
 
-    public AdministratorFrame()
-    {
+    public AdministratorFrame() {
+        super();
         this.setTitle("Administrator");
-        this.setVisible(true);
-        this.setResizable(false);
-        this.setBounds(10,10,370,600);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        setLayoutManager();
         setLocationAndSize();
         addComponentsToContainer();
-        addActionEvent(); //calling addActionEvent() method
-
+        addActionEvent();
     }
 
-    private void setLayoutManager()
-    {
-        container.setLayout(null);
-    }
-
-    private void setLocationAndSize()
-    {
+    protected void setLocationAndSize() {
         addOrDeleteStudentButton.setBounds(60,150,250,30);
         updateDetailsButton.setBounds(60,200,250,30);
         logoutButton.setBounds(60, 500, 250, 30);
     }
 
-    private void addComponentsToContainer()
+    protected void addComponentsToContainer()
     {
         container.add(addOrDeleteStudentButton);
         container.add(updateDetailsButton);
         container.add(logoutButton);
+        container.revalidate();
+        container.repaint();
     }
 
-    private void addActionEvent()
+    protected void addActionEvent()
     {
         // adding Action listener to the addStudentButton button
         addOrDeleteStudentButton.addActionListener(e -> {
@@ -129,6 +117,7 @@ public class AdministratorFrame extends JFrame {
 
                 if(existInDatabase(name, surname, true) == null) {
                     printErrorMessage(3);
+                    return;
                 }
 
                 // set the text fields to empty strings
